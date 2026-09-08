@@ -281,7 +281,7 @@ document.getElementById("addSubj").onclick=async()=>{
 /* ══════ render ══════ */
 function renderStrip(){
   const el=document.getElementById("strip"); el.innerHTML="";
-  const base=new Date(); base.setHours(0,0,0,0); const tk=keyOf(base);
+  const base=new Date(); base.setHours(0,0,0,0); const tk=todayKey()(base);
   for(let i=-3;i<=17;i++){
     const d=new Date(base); d.setDate(base.getDate()+i);
     const k=keyOf(d), has=tasks.some(t=>t.date===k);
