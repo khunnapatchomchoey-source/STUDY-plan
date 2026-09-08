@@ -281,10 +281,10 @@ document.getElementById("addSubj").onclick=async()=>{
 /* ══════ render ══════ */
 function renderStrip(){
   const el=document.getElementById("strip"); el.innerHTML="";
-  const base=new Date(); base.setHours(0,0,0,0); const tk=todayKey()(base);
+  const base=new Date(); base.setHours(0,0,0,0);
   for(let i=-3;i<=17;i++){
     const d=new Date(base); d.setDate(base.getDate()+i);
-    const k=keyOf(d), has=tasks.some(t=>t.date===k);
+    const k = d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
     const div=document.createElement("div");
     div.className="day"+(k===selDate?" sel":"")+(k===tk?" today":"");
     div.innerHTML=`<span class="dw">${TH_D[d.getDay()]}</span><span class="dn">${d.getDate()}</span>
