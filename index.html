@@ -279,19 +279,35 @@ document.getElementById("addSubj").onclick=async()=>{
 };
 
 /* ══════ render ══════ */
-function renderStrip(){
-  const el=document.getElementById("strip"); el.innerHTML="";
-  const base=new Date(); base.setHours(0,0,0,0);
-  for(let i=-3;i<=17;i++){
-    const d=new Date(base); d.setDate(base.getDate()+i);
+function renderStrip() {
+
+  const el = document.getElementById("strip"); el.innerHTML = "";
+
+  const base = new Date(); base.setHours(0,0,0,0);
+
+  const tk = base.getFullYear() + "-" + String(base.getMonth()+1).padStart(2,"0") + "-" + String(base.getDate()).padStart(2,"0");
+
+
+  for(let i=-3; i<=17; i++){
+
+    const d = new Date(base); d.setDate(base.getDate()+i);
+
     const k = d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
-    const div=document.createElement("div");
-    div.className="day"+(k===selDate?" sel":"")+(k===tk?" today":"");
-    div.innerHTML=`<span class="dw">${TH_D[d.getDay()]}</span><span class="dn">${d.getDate()}</span>
-      ${has?'<span class="dot"></span>':'<span style="height:5px"></span>'}`;
-    div.onclick=()=>{selDate=k;renderAll()};
+
+    const has = tasks.some(t=>t.date===k);
+
+    const div = document.createElement("div");
+
+    div.className = "day" + (k===selDate ? " sel" : "") + (k===tk ? " today" : "");
+
+    div.innerHTML = `<span class="dw">${["อา","จ","อ","พ","พฤ","ศ","ส"][d.getDay()]}</span><span class="dn">${d.getDate()}</span>${has?'<span class="dot"></span>':'<span style="height:5px"></span>'}`;
+
+    div.onclick = () => { selDate=k; renderAll(); };
+
     el.appendChild(div);
+
   }
+
 }
 function taskHTML(t){
   const s=subjOf(t.subj);
@@ -321,7 +337,7 @@ function renderList(){
     let out="";
     for(let i=0;i<7;i++){
       const d=new Date(start); d.setDate(start.getDate()+i);
-      const k=keyOf(d), items=sortT(tasks.filter(t=>t.date===k));
+      d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0"), items=sortT(tasks.filter(t=>t.date===k));
       out+=`<div class="wkhead"><span>${TH_DF[d.getDay()]} ${fmtTH(k)}${k===todayKey()?" · วันนี้":""}</span>
         <span class="n">${items.filter(t=>t.done).length}/${items.length}</span></div>`;
       out+=items.length?items.map(taskHTML).join("")
