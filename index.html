@@ -195,7 +195,10 @@ let subjects=[], opts={mark:false,auto:true,notify:true};
 let calId=null, connected=false, lineOn=false, editId=null, busy=false;
 let selDate=todayKey(), pickSubj=null, view="day";
 
-const keyOf=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+function todayKey(){
+  const d = new Date();
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
 function todayKey(){return keyOf(new Date())}
 const parseKey=k=>{const[y,m,d]=k.split("-").map(Number);return new Date(y,m-1,d)};
 const TH_M=["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
