@@ -8,6 +8,17 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0f1115">
 <title>Study Planner</title>
+  <div class="header">
+  <h1>Study Planner</h1>
+  <!-- ตรงนี้คือปุ่ม วัน / สัปดาห์ ของเดิมที่คุณมีอยู่ -->
+</div>
+
+<!-- *** วางโค้ดจุดที่ 1 ตรงนี้ *** -->
+<div id="stats" style="margin: 10px 0; padding: 15px; background: #1a1a1a; border-radius: 12px; display: flex; justify-content: space-around; border: 1px solid #333;">
+  <div style="text-align: center;">งานค้าง<br><b id="todo-count" style="font-size: 1.2em; color: #ff9999;">0</b></div>
+  <div style="text-align: center;">ทำเสร็จแล้ว<br><b id="done-count" style="font-size: 1.2em; color: #99ff99;">0</b></div>
+  <div style="text-align: center;">รวม<br><b id="total-count" style="font-size: 1.2em;">0</b></div>
+</div>
 <style>
 :root{--bg:#0f1115;--card:#181b22;--line:#262a33;--text:#e8eaed;--muted:#9aa0aa;
 --accent:#7c9cff;--green:#4ade80;--red:#f87171;--amber:#fbbf24;
