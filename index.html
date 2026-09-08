@@ -1,740 +1,416 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>สมุดงาน — Study Planner</title>
-
-<meta name="mobile-web-app-capable" content="yes">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Planner">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="สมุดงาน">
-<meta name="theme-color" content="#16233F" id="themeColorMeta">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2316233F'/%3E%3Cpath d='M28 30h44v6H28zM28 47h44v6H28zM28 64h30v6H28z' fill='%23E2A33B'/%3E%3C/svg%3E">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2316233F'/%3E%3Cpath d='M28 30h44v6H28zM28 47h44v6H28zM28 64h30v6H28z' fill='%23E2A33B'/%3E%3C/svg%3E">
-<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%E0%B8%AA%E0%B8%A1%E0%B8%B8%E0%B8%94%E0%B8%87%E0%B8%B2%E0%B8%99%22%2C%22short_name%22%3A%22%E0%B8%AA%E0%B8%A1%E0%B8%B8%E0%B8%94%E0%B8%87%E0%B8%B2%E0%B8%99%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23EEF0F4%22%2C%22theme_color%22%3A%22%2316233F%22%7D">
-
+<meta name="theme-color" content="#0f1115">
+<title>Study Planner</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700;800&display=swap');
-
-  :root {
-    --ink: #16233F;
-    --ink-light: #47547A;
-    --paper: #EEF0F4;
-    --paper-card: #FFFFFF;
-    --amber: #D98E2B;
-    --amber-soft: #FBEBD2;
-    --danger: #B4432F;
-    --danger-soft: #FBE4DE;
-    --sage: #4C7A63;
-    --sage-soft: #DFEBE4;
-    --charcoal: #20242C;
-    --line: #DCE0E8;
-    --done: #98A0B0;
-  }
-
-  body.dark {
-    --ink: #6C8FD8;
-    --ink-light: #93A0C2;
-    --paper: #0F141F;
-    --paper-card: #1A2233;
-    --amber-soft: #3A2E1A;
-    --danger-soft: #3A1F1C;
-    --sage-soft: #182B24;
-    --charcoal: #E7E9EF;
-    --line: #2A3348;
-    --done: #5C667D;
-  }
-
-  * { box-sizing: border-box; }
-  html { -webkit-tap-highlight-color: transparent; }
-
-  body {
-    margin: 0;
-    background: var(--paper);
-    color: var(--charcoal);
-    font-family: 'Inter', sans-serif;
-    min-height: 100vh;
-    min-height: 100dvh;
-    padding-bottom: env(safe-area-inset-bottom);
-    padding-left: env(safe-area-inset-left);
-    padding-right: env(safe-area-inset-right);
-    transition: background 0.25s ease, color 0.25s ease;
-    overscroll-behavior-y: contain;
-  }
-
-  .wrap {
-    max-width: 720px; margin: 0 auto;
-    padding: calc(20px + env(safe-area-inset-top)) 18px 100px;
-  }
-
-  /* HEADER */
-  header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
-
-  h1 {
-    font-family: 'Source Serif 4', serif;
-    font-weight: 700; font-style: italic; font-size: 30px;
-    color: var(--ink); margin: 0 0 3px; line-height: 1.1;
-  }
-
-  .sub { color: var(--ink-light); font-size: 13.5px; margin: 0; display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
-
-  .streak-pill {
-    display: inline-flex; align-items: center; gap: 3px;
-    background: var(--amber-soft); color: #8A5C15;
-    font-size: 11.5px; font-weight: 700; padding: 2px 8px; border-radius: 20px;
-  }
-  body.dark .streak-pill { color: var(--amber); }
-
-  .header-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
-
-  .icon-btn {
-    background: var(--paper-card); border: 1px solid var(--line); border-radius: 50%;
-    width: 42px; height: 42px; font-size: 16px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
-
-  .install-btn {
-    background: var(--paper-card); border: 1px solid var(--line); color: var(--ink);
-    font-size: 12px; font-weight: 600; padding: 10px 13px; border-radius: 20px; cursor: pointer;
-    white-space: nowrap; display: flex; align-items: center; gap: 5px; min-height: 42px;
-  }
-  .install-btn:hover { background: var(--ink); color: white; }
-
-  /* DAY STRIP */
-  .day-strip { display: flex; gap: 7px; overflow-x: auto; padding: 2px 2px 6px; margin-bottom: 14px; scrollbar-width: none; }
-  .day-strip::-webkit-scrollbar { display: none; }
-  .day-chip {
-    flex: 0 0 auto; width: 44px; padding: 7px 0 8px; text-align: center;
-    border-radius: 12px; background: var(--paper-card); border: 1px solid var(--line); cursor: pointer;
-  }
-  .day-chip.active { background: var(--ink); border-color: var(--ink); }
-  .day-chip .dname { font-size: 10px; color: var(--ink-light); font-weight: 700; }
-  .day-chip.active .dname { color: rgba(255,255,255,0.75); }
-  .day-chip .dnum { font-size: 15px; font-weight: 700; margin-top: 2px; color: var(--charcoal); }
-  .day-chip.active .dnum { color: white; }
-  .day-chip .ddot { width: 5px; height: 5px; border-radius: 50%; background: var(--amber); margin: 5px auto 0; }
-  .day-chip .ddot.hidden { visibility: hidden; }
-  .day-chip.active .ddot { background: white; }
-
-  .day-filter-bar {
-    display: none; align-items: center; justify-content: space-between;
-    background: var(--paper-card); border: 1px solid var(--line); border-radius: 9px;
-    padding: 8px 12px; margin-bottom: 12px; font-size: 13px; font-weight: 600; color: var(--ink);
-  }
-  .day-filter-bar.show { display: flex; }
-  .day-filter-bar button { background: none; border: none; color: var(--ink-light); font-size: 16px; cursor: pointer; }
-
-  /* STATS */
-  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
-  .stat-card { background: var(--paper-card); border: 1px solid var(--line); border-radius: 10px; padding: 10px 8px; text-align: center; }
-  .stat-num { font-family: 'Source Serif 4', serif; font-weight: 700; font-size: 22px; color: var(--ink); line-height: 1; }
-  .stat-card.overdue .stat-num { color: var(--danger); }
-  .stat-num.zero { color: var(--done); }
-  .stat-label { font-size: 10.5px; color: var(--ink-light); margin-top: 3px; font-weight: 600; }
-
-  .progress-track { height: 7px; background: var(--line); border-radius: 20px; overflow: hidden; margin-bottom: 20px; }
-  .progress-fill { height: 100%; background: var(--sage); border-radius: 20px; transition: width 0.4s ease; }
-
-  /* ADD PANEL */
-  .add-panel { background: var(--paper-card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-bottom: 20px; }
-  .add-row { display: grid; grid-template-columns: 1fr; gap: 10px; }
-  @media (min-width: 560px) { .add-row.grid2 { grid-template-columns: 1.3fr 1fr; } }
-  label { font-size: 11.5px; color: var(--ink-light); font-weight: 700; display: block; margin-bottom: 4px; }
-  input[type="text"], input[type="date"] {
-    width: 100%; padding: 9px 10px; border: 1px solid var(--line); border-radius: 7px;
-    font-family: 'Inter', sans-serif; font-size: 14px; background: var(--paper); color: var(--charcoal);
-  }
-  input:focus { outline: 2px solid var(--ink); outline-offset: 1px; }
-  .add-btn {
-    margin-top: 12px; width: 100%; padding: 11px; background: var(--ink); color: white;
-    border: none; border-radius: 7px; font-weight: 700; font-size: 14px; cursor: pointer;
-  }
-  .add-btn:hover { opacity: 0.9; }
-
-  /* CONTROLS */
-  .controls { display: flex; gap: 8px; margin-bottom: 12px; align-items: center; }
-  .search-box { flex: 1; padding: 9px 12px; border: 1px solid var(--line); border-radius: 20px; font-size: 13.5px; background: var(--paper-card); color: var(--charcoal); }
-  .sort-toggle { display: flex; background: var(--paper-card); border: 1px solid var(--line); border-radius: 20px; padding: 2px; flex-shrink: 0; }
-  .sort-btn { border: none; background: none; padding: 7px 11px; font-size: 12px; font-weight: 600; color: var(--ink-light); border-radius: 20px; cursor: pointer; }
-  .sort-btn.active { background: var(--ink); color: white; }
-
-  .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
-  .chip { display: flex; align-items: center; gap: 5px; padding: 5px 11px; border-radius: 20px; font-size: 12px; font-weight: 600; border: 1px solid var(--line); background: var(--paper-card); color: var(--ink-light); cursor: pointer; }
-  .chip.active { background: var(--ink); color: white; border-color: var(--ink); }
-  .chip-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-
-  .bucket-label {
-    font-size: 12px; font-weight: 700; color: var(--ink-light);
-    margin: 18px 0 8px; display: flex; align-items: center; gap: 6px;
-  }
-  .bucket-count { background: var(--line); color: var(--ink-light); font-size: 10.5px; font-weight: 700; padding: 1px 7px; border-radius: 20px; }
-
-  .section-label { font-size: 12px; font-weight: 700; color: var(--ink-light); margin: 20px 0 10px; }
-
-  /* TASK */
-  .task {
-    position: relative; overflow: visible;
-    display: flex; align-items: flex-start; gap: 12px;
-    background: var(--paper-card); border: 1px solid var(--line); border-left: 4px solid var(--ink);
-    border-radius: 9px; padding: 12px 14px 12px 18px; margin-bottom: 8px;
-    transition: transform 0.15s ease, opacity 0.3s ease;
-  }
-  .task.urgent { border-left-color: var(--danger); }
-  .task.soon { border-left-color: var(--amber); }
-  .task.done { border-left-color: var(--done); opacity: 0.5; }
-  .task.celebrate { animation: pulse 0.4s ease; }
-
-  @keyframes pulse { 0% { transform: scale(1); } 40% { transform: scale(1.02); background: var(--sage-soft); } 100% { transform: scale(1); } }
-
-  .check-wrap {
-    position: relative; flex-shrink: 0;
-    padding: 11px; margin: -11px 0 -11px -11px;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .task input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--sage); cursor: pointer; }
-
-  .task-body { flex: 1; min-width: 0; }
-  .task-title { font-weight: 600; font-size: 15px; margin: 0 0 4px; word-break: break-word; color: var(--charcoal); }
-  .task.done .task-title { text-decoration: line-through; }
-
-  .task-meta { font-size: 12px; color: var(--ink-light); display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
-  .subject-tag { display: flex; align-items: center; gap: 4px; font-weight: 600; }
-  .subject-dot { width: 7px; height: 7px; border-radius: 50%; }
-
-  .badge { font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
-  .badge.urgent { background: var(--danger-soft); color: var(--danger); }
-  .badge.soon { background: var(--amber-soft); color: #8A5C15; }
-  body.dark .badge.soon { color: var(--amber); }
-  .badge.ok { background: var(--line); color: var(--ink); }
-  .badge.done { background: var(--line); color: var(--done); }
-
-  .del-btn { background: none; border: none; color: var(--ink-light); font-size: 18px; cursor: pointer; padding: 10px; margin: -10px -10px -10px 0; line-height: 1; flex-shrink: 0; }
-  .del-btn:hover { color: var(--danger); }
-
-  .confetti-burst { position: absolute; left: 16px; top: 12px; pointer-events: none; }
-  .confetti-burst span { position: absolute; font-size: 13px; opacity: 1; animation: confetti-pop 0.8s ease forwards; }
-  @keyframes confetti-pop { to { transform: translate(var(--dx), var(--dy)) scale(1.3) rotate(20deg); opacity: 0; } }
-
-  .empty { text-align: center; color: var(--ink-light); font-size: 13.5px; padding: 34px 14px; border: 1px dashed var(--line); border-radius: 10px; }
-  .empty-emoji { font-size: 26px; display: block; margin-bottom: 8px; }
-
-  .loading { text-align: center; padding: 40px; color: var(--ink-light); }
-
-  .save-banner {
-    display: none; align-items: center; justify-content: space-between; gap: 10px;
-    background: var(--amber-soft); color: #8A5C15; border: 1px solid var(--amber);
-    border-radius: 9px; padding: 10px 12px; font-size: 12.5px; font-weight: 600; margin-top: 16px;
-  }
-  body.dark .save-banner { color: var(--amber); }
-  .save-banner.show { display: flex; }
-  .save-banner button { background: #8A5C15; color: white; border: none; border-radius: 14px; padding: 5px 12px; font-size: 11.5px; font-weight: 700; cursor: pointer; flex-shrink: 0; }
-
-  /* SNACKBAR */
-  .snackbar {
-    position: fixed; left: 50%; bottom: calc(22px + env(safe-area-inset-bottom)); transform: translate(-50%, 120%);
-    background: var(--ink); color: white; padding: 12px 16px; border-radius: 10px;
-    font-size: 13.5px; font-weight: 600; display: flex; align-items: center; gap: 14px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.2); transition: transform 0.3s ease; z-index: 40; max-width: 90%;
-  }
-  .snackbar.show { transform: translate(-50%, 0); }
-  .snackbar button { background: rgba(255,255,255,0.15); color: white; border: none; border-radius: 6px; padding: 5px 10px; font-weight: 700; font-size: 12.5px; cursor: pointer; flex-shrink: 0; }
-
-  /* MODAL */
-  .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(22,35,63,0.5); align-items: flex-end; justify-content: center; z-index: 50; }
-  .modal-backdrop.show { display: flex; }
-  .modal { background: var(--paper-card); border-radius: 16px 16px 0 0; max-width: 480px; width: 100%; padding: 22px 20px 28px; }
-  .modal h3 { font-family: 'Source Serif 4', serif; margin: 0 0 12px; color: var(--ink); }
-  .modal ol { padding-left: 20px; margin: 0 0 16px; font-size: 14px; line-height: 1.7; color: var(--charcoal); }
-  .modal-close { width: 100%; padding: 11px; background: var(--ink); color: white; border: none; border-radius: 7px; font-weight: 700; cursor: pointer; }
+:root{--bg:#0f1115;--card:#181b22;--line:#262a33;--text:#e8eaed;--muted:#9aa0aa;
+--accent:#7c9cff;--green:#4ade80;--red:#f87171;--amber:#fbbf24;
+--st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px);
+--sl:env(safe-area-inset-left,0px);--sr:env(safe-area-inset-right,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior-y:none}
+body{margin:0;background:var(--bg);color:var(--text);
+font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Noto Sans Thai",sans-serif;
+padding-left:var(--sl);padding-right:var(--sr)}
+header{position:sticky;top:0;z-index:20;background:rgba(15,17,21,.93);backdrop-filter:blur(14px);
+-webkit-backdrop-filter:blur(14px);padding:calc(var(--st) + 14px) 16px 10px;border-bottom:1px solid var(--line)}
+.hrow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+h1{margin:0;font-size:21px;font-weight:700;letter-spacing:-.3px}
+.sub{color:var(--muted);font-size:12px;margin-top:3px}
+.seg{display:flex;background:#11141a;border:1px solid var(--line);border-radius:10px;overflow:hidden;flex:0 0 auto}
+.seg button{background:none;color:var(--muted);padding:7px 13px;min-height:0;font-size:12px;border-radius:0}
+.seg button.on{background:var(--accent);color:#0f1115}
+main{padding:14px 16px calc(var(--sb) + 175px)}
+.strip{display:flex;gap:8px;overflow-x:auto;padding:12px 16px;scrollbar-width:none}
+.strip::-webkit-scrollbar{display:none}
+.day{flex:0 0 auto;width:52px;min-height:66px;border-radius:14px;background:var(--card);
+border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.day.sel{background:var(--accent);border-color:var(--accent);color:#0f1115;font-weight:700}
+.day.today:not(.sel){border-color:var(--accent)}
+.day .dw{font-size:11px;opacity:.7}.day .dn{font-size:19px;font-weight:700}
+.day .dot{width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.day.sel .dot{background:#0f1115}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:14px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.dotstat{width:8px;height:8px;border-radius:50%;background:var(--red);flex:0 0 auto}
+.dotstat.on{background:var(--green)}.dotstat.warn{background:var(--amber)}
+select,input,button{font-family:inherit;font-size:15px}
+select,input[type=text],input[type=time],input[type=date]{background:#11141a;color:var(--text);
+border:1px solid var(--line);border-radius:12px;padding:12px;min-height:46px;width:100%}
+select{margin-top:10px}
+button{border:none;border-radius:12px;padding:12px 16px;min-height:46px;font-weight:600}
+.btn{background:var(--accent);color:#0f1115}
+.btn.ghost{background:#11141a;color:var(--text);border:1px solid var(--line)}
+.btn.danger{background:#3a1f22;color:var(--red);border:1px solid #52272c}
+.btn.sm{padding:8px 13px;min-height:36px;font-size:12px}
+.btn:active{opacity:.7}
+.opt{display:flex;align-items:center;gap:9px;margin-top:12px;font-size:13px;color:var(--muted)}
+.opt input{width:19px;height:19px;min-height:0;accent-color:var(--accent);flex:0 0 auto}
+.hint{font-size:11px;color:var(--muted);margin-top:10px;line-height:1.6}
+.fold{margin-top:12px;border-top:1px solid var(--line);padding-top:12px;display:none}
+.fold.show{display:block}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.chip{display:flex;align-items:center;gap:6px;background:#11141a;border:1px solid var(--line);
+border-radius:20px;padding:6px 11px;font-size:12px;min-height:0}
+.chip .sw{width:10px;height:10px;border-radius:50%;flex:0 0 auto}
+.chip.on{border-color:var(--accent);background:#232f4d}
+.chip .x{color:var(--muted);font-weight:700;padding-left:2px}
+.task{display:flex;gap:12px;align-items:flex-start;background:var(--card);
+border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:9px;position:relative;overflow:hidden}
+.task .bar{position:absolute;left:0;top:0;bottom:0;width:4px}
+.cb{flex:0 0 auto;width:24px;height:24px;border-radius:8px;border:2px solid var(--muted);position:relative;margin-top:1px}
+.cb::after{content:"";position:absolute;inset:-11px}
+.cb.done{background:var(--green);border-color:var(--green)}
+.cb.done::before{content:"✓";position:absolute;inset:0;display:flex;align-items:center;
+justify-content:center;color:#0f1115;font-size:15px;font-weight:900}
+.tbody{flex:1;min-width:0}
+.ttl{font-size:15px;line-height:1.4;word-break:break-word}
+.task.done .ttl{text-decoration:line-through;color:var(--muted)}
+.meta{font-size:12px;color:var(--muted);margin-top:5px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tag{background:#232833;padding:2px 8px;border-radius:6px;font-size:11px}
+.tag.g{background:#1e3a2f;color:var(--green)}
+.tag.up{background:#232f4d;color:var(--accent);border:none;padding:4px 10px;min-height:0;font-size:11px;font-weight:600;border-radius:6px}
+.del{background:none;border:none;color:var(--muted);font-size:20px;padding:0;width:32px;height:32px;min-height:32px;position:relative;flex:0 0 auto}
+.del::after{content:"";position:absolute;inset:-8px}
+.empty{text-align:center;color:var(--muted);padding:40px 0;font-size:14px;line-height:1.7}
+.wkhead{font-size:13px;font-weight:700;color:var(--accent);margin:18px 0 9px;display:flex;
+justify-content:space-between;align-items:center}
+.wkhead .n{color:var(--muted);font-weight:400;font-size:11px}
+.addbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(15,17,21,.96);
+backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);
+padding:10px calc(16px + var(--sl)) calc(var(--sb) + 12px) calc(16px + var(--sr))}
+.addrow{display:flex;gap:8px;margin-top:8px}
+.addrow input[type=time]{flex:0 0 106px}
+.addrow button{flex:0 0 auto;padding:12px 18px}
+.subjrow{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.subjrow::-webkit-scrollbar{display:none}
+.subjrow .chip{flex:0 0 auto}
+.sheet{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.6);display:none;align-items:flex-end;justify-content:center}
+.sheet.show{display:flex}
+.sheetbox{width:100%;max-width:520px;background:var(--card);border:1px solid var(--line);
+border-radius:20px 20px 0 0;padding:20px calc(18px + var(--sl)) calc(var(--sb) + 18px) calc(18px + var(--sr));max-height:88vh;overflow:auto}
+.sheetbox h3{margin:0 0 14px;font-size:17px}
+.sheetbox input,.sheetbox select{margin-bottom:10px}
+.two{display:flex;gap:10px}
+.sheetact{display:flex;gap:10px;margin-top:16px}
+.sheetact .btn{flex:1}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--sb) + 110px);
+background:#232833;border:1px solid var(--line);padding:11px 17px;border-radius:12px;font-size:13px;
+z-index:60;opacity:0;transition:.25s;pointer-events:none;max-width:84%;text-align:center}
+.toast.show{opacity:1}
+.spin{opacity:.55}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div>
-      <h1>สมุดงาน</h1>
-      <p class="sub"><span id="greeting"></span><span class="streak-pill" id="streakPill" style="display:none;">🔥 <span id="streakNum">0</span> วันติด</span></p>
-    </div>
-    <div class="header-actions">
-      <button class="icon-btn" id="themeToggle" onclick="toggleTheme()">🌙</button>
-      <button class="install-btn" onclick="showInstallModal()">⬇ เพิ่มลงหน้าจอ</button>
-    </div>
-  </header>
-
-  <div class="day-strip" id="dayStrip"></div>
-  <div class="day-filter-bar" id="dayFilterBar">
-    <span id="dayFilterLabel"></span>
-    <button onclick="clearDayFilter()">✕</button>
+<header>
+  <div class="hrow">
+    <div><h1>Study Planner</h1><div class="sub" id="streak">กำลังโหลด…</div></div>
+    <div class="seg"><button id="vDay" class="on">วัน</button><button id="vWeek">สัปดาห์</button></div>
   </div>
-
-  <div class="stats">
-    <div class="stat-card overdue"><div class="stat-num" id="statOverdue">0</div><div class="stat-label">เลยกำหนด</div></div>
-    <div class="stat-card"><div class="stat-num" id="statSoon">0</div><div class="stat-label">ใกล้ครบ 7 วัน</div></div>
-    <div class="stat-card"><div class="stat-num" id="statDone">0</div><div class="stat-label">เสร็จแล้ว</div></div>
-  </div>
-  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-
-  <div class="add-panel">
-    <div class="add-row grid2">
-      <div><label for="subject">วิชา</label><input type="text" id="subject" placeholder="เช่น แคลคูลัส"></div>
-      <div><label for="due">วันครบกำหนด</label><input type="date" id="due"></div>
+</header>
+<div class="strip" id="strip"></div>
+<main>
+  <div class="card">
+    <div class="row">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="dotstat" id="stat"></span><strong style="font-size:14px">การเชื่อมต่อ</strong>
+      </div>
+      <div style="display:flex;gap:7px">
+        <button class="btn ghost sm" id="gearBtn">ตั้งค่า</button>
+        <button class="btn ghost sm" id="authBtn">เชื่อมต่อ</button>
+      </div>
     </div>
-    <div class="add-row" style="margin-top:10px;">
-      <div><label for="title">ชื่องาน</label><input type="text" id="title" placeholder="เช่น ส่งการบ้านบทที่ 4"></div>
+    <div class="hint" id="syncInfo">—</div>
+
+    <div class="fold" id="fold">
+      <select id="calSel" style="display:none"></select>
+      <label class="opt"><input type="checkbox" id="optMark">ติ๊กเสร็จ → ใส่ ✓ บนปฏิทิน</label>
+      <label class="opt"><input type="checkbox" id="optAuto">เพิ่มงานใหม่ → ส่งขึ้นปฏิทินทันที</label>
+      <label class="opt"><input type="checkbox" id="optNotify">เปิดแจ้งเตือนเข้า LINE</label>
+
+      <div style="margin-top:14px;font-size:13px;font-weight:600">🔔 LINE</div>
+      <div class="hint" id="lineInfo">—</div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="btn ghost sm" id="pairBtn">จับคู่ LINE</button>
+        <button class="btn ghost sm" id="testBtn">ส่งทดสอบ</button>
+      </div>
+
+      <div style="margin-top:16px;font-size:13px;font-weight:600">🎨 วิชา</div>
+      <div class="chips" id="subjAdmin"></div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <input type="text" id="newSubj" placeholder="ชื่อวิชาใหม่" style="margin-top:0">
+        <select id="newColor" style="flex:0 0 108px;margin-top:0"></select>
+        <button class="btn sm" id="addSubj" style="flex:0 0 auto">เพิ่ม</button>
+      </div>
     </div>
-    <button class="add-btn" onclick="addTask()">+ เพิ่มงาน</button>
   </div>
+  <div id="list"></div>
+</main>
 
-  <div class="controls">
-    <input type="text" class="search-box" id="searchBox" placeholder="ค้นหางาน..." oninput="render()">
-    <div class="sort-toggle">
-      <button class="sort-btn active" id="sortDate" onclick="setSort('date')">วันที่</button>
-      <button class="sort-btn" id="sortSubject" onclick="setSort('subject')">วิชา</button>
-    </div>
-  </div>
-
-  <div class="chips" id="subjectChips"></div>
-
-  <div class="section-label">ยังไม่เสร็จ</div>
-  <div id="pending"><div class="loading">กำลังโหลด...</div></div>
-
-  <div class="section-label" id="doneLabel" style="display:none;">เสร็จแล้ว</div>
-  <div id="completed"></div>
-
-  <div class="save-banner" id="saveBanner">
-    ⚠ อุปกรณ์นี้ไม่รองรับการบันทึกถาวร — งานจะหายเมื่อปิดหน้านี้ <button onclick="retrySave()">ลองใหม่</button>
+<div class="addbar">
+  <div class="subjrow" id="subjPick"></div>
+  <div class="addrow">
+    <input type="text" id="newTitle" placeholder="เพิ่มงานใหม่…" autocomplete="off" enterkeyhint="done">
+    <input type="time" id="newTime"><button class="btn" id="addBtn">เพิ่ม</button>
   </div>
 </div>
 
-<div class="snackbar" id="snackbar">
-  <span>ลบงานแล้ว</span>
-  <button onclick="undoDelete()">เลิกทำ</button>
-</div>
-
-<div class="modal-backdrop" id="installModal">
-  <div class="modal">
-    <h3>เพิ่มลงหน้าจอโฮม</h3>
-    <div id="installSteps"></div>
-    <button class="modal-close" onclick="hideInstallModal()">เข้าใจแล้ว</button>
+<div class="sheet" id="sheet"><div class="sheetbox">
+  <h3>แก้ไขงาน</h3>
+  <input type="text" id="edTitle" placeholder="ชื่องาน">
+  <div class="two"><input type="date" id="edDate"><input type="time" id="edTime"></div>
+  <select id="edSubj"></select>
+  <label class="opt"><input type="checkbox" id="edDone">ทำเสร็จแล้ว</label>
+  <div class="hint" id="edNote"></div>
+  <div class="sheetact">
+    <button class="btn danger" id="edDel">ลบ</button>
+    <button class="btn ghost" id="edCancel">ยกเลิก</button>
+    <button class="btn" id="edSave">บันทึก</button>
   </div>
-</div>
+</div></div>
+<div class="toast" id="toast"></div>
 
 <script>
-let tasks = [];
-let theme = 'light';
-let currentFilter = 'all';
-let currentSort = 'date';
-let currentDayFilter = null;
-let lastDeleted = null;
-let snackbarTimer = null;
+/* ══════ แก้บรรทัดนี้บรรทัดเดียว ══════ */
+const API = "https://study-planner-sync.ชื่อคุณ.workers.dev";
 
-const SUBJECT_COLORS = ['#16233F', '#B4432F', '#4C7A63', '#D98E2B', '#6B4E9C', '#2A7F8C'];
-const DAY_NAMES = ['อา','จ','อ','พ','พฤ','ศ','ส'];
+/* ══════ กุญแจ ══════ */
+let APP_KEY=localStorage.getItem("sp_key")||"";
+if(location.hash.startsWith("#k=")){ APP_KEY=decodeURIComponent(location.hash.slice(3));
+  localStorage.setItem("sp_key",APP_KEY); history.replaceState(null,"",location.pathname); }
+if(!APP_KEY){ APP_KEY=prompt("ใส่กุญแจเข้าใช้ (APP_KEY)")||""; localStorage.setItem("sp_key",APP_KEY); }
 
-function subjectColor(subject) {
-  let hash = 0;
-  for (let i = 0; i < subject.length; i++) hash = subject.charCodeAt(i) + ((hash << 5) - hash);
-  return SUBJECT_COLORS[Math.abs(hash) % SUBJECT_COLORS.length];
+/* ══════ สี ══════ */
+const COLORS=[["ฟ้า","#7c9cff",7],["เขียว","#4ade80",10],["ส้ม","#fb923c",6],["ชมพู","#f472b6",4],
+["ม่วง","#a78bfa",3],["แดง","#f87171",11],["เหลือง","#fbbf24",5],["เทา","#9aa0aa",8]];
+
+let tasks=JSON.parse(localStorage.getItem("sp_cache")||"[]");
+let subjects=[], opts={mark:false,auto:true,notify:true};
+let calId=null, connected=false, lineOn=false, editId=null, busy=false;
+let selDate=todayKey(), pickSubj=null, view="day";
+
+const keyOf=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+function todayKey(){return keyOf(new Date())}
+const parseKey=k=>{const[y,m,d]=k.split("-").map(Number);return new Date(y,m-1,d)};
+const TH_M=["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
+const TH_D=["อา","จ","อ","พ","พฤ","ศ","ส"];
+const TH_DF=["อาทิตย์","จันทร์","อังคาร","พุธ","พฤหัสฯ","ศุกร์","เสาร์"];
+const fmtTH=k=>{const d=parseKey(k);return d.getDate()+" "+TH_M[d.getMonth()]};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const subjOf=id=>subjects.find(s=>s.id===id);
+const evIdOf=t=>t.src==="gcal"?t.id.slice(5):(t.gcalId||null);
+
+let toastT;
+function toast(m){const e=document.getElementById("toast");e.textContent=m;e.classList.add("show");
+clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove("show"),2800)}
+
+async function api(path,method="GET",body=null){
+  if(busy) return null; busy=true; document.body.classList.add("spin");
+  try{
+    const opt={method,headers:{"x-app-key":APP_KEY}};
+    if(body){opt.headers["content-type"]="application/json";opt.body=JSON.stringify(body)}
+    const res=await fetch(API+path,opt); const j=await res.json();
+    if(j.error) throw new Error(j.error);
+    if(j.tasks){ tasks=j.tasks; localStorage.setItem("sp_cache",JSON.stringify(tasks)) }
+    return j;
+  }catch(e){ toast(e.message||"ต่อเซิร์ฟเวอร์ไม่ได้"); return null }
+  finally{ busy=false; document.body.classList.remove("spin") }
 }
 
-function dateKey(d) {
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${y}-${m}-${day}`;
+async function refresh(){
+  const s=await api("/api/state");
+  if(!s){ setStatus("off","ออฟไลน์ · แสดงข้อมูลที่เก็บไว้"); renderAll(); return }
+  connected=s.connected; calId=s.calId; opts=s.opts||opts; subjects=s.subjects||[]; lineOn=s.line;
+  optMark.checked=!!opts.mark; optAuto.checked=!!opts.auto; optNotify.checked=opts.notify!==false;
+  const sel=document.getElementById("calSel");
+  if(s.calendars?.length){ sel.style.display="block"; sel.innerHTML="";
+    s.calendars.forEach(c=>{const o=document.createElement("option");
+      o.value=c.id;o.textContent=c.name+(c.rw?"":"  (อ่านอย่างเดียว)");sel.appendChild(o)});
+    sel.value=calId||""; }
+  document.getElementById("lineInfo").textContent = lineOn
+    ? "จับคู่แล้ว ✓ · สรุป 07:00 · เตือนก่อนถึงเวลา 1 ชม. · พรีวิวพรุ่งนี้ 20:00"
+    : "ยังไม่ได้จับคู่ — กด “จับคู่ LINE” แล้วทักบอทใน LINE";
+  if(connected){
+    const t=s.lastSync?new Date(s.lastSync).toLocaleString("th-TH",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}):"—";
+    setStatus("ok",`ซิงก์อัตโนมัติทุกชั่วโมงบนเซิร์ฟเวอร์ · ล่าสุด ${t}`);
+  }else setStatus("off","ยังไม่ได้เชื่อมต่อ Google · แตะปุ่มเพื่อเริ่ม");
+  renderSubjects(); renderAll();
+}
+function setStatus(kind,msg){
+  document.getElementById("stat").className="dotstat"+(kind==="ok"?" on":kind==="warn"?" warn":"");
+  document.getElementById("syncInfo").textContent=msg;
+  document.getElementById("authBtn").textContent=kind==="ok"?"ซิงก์":"เชื่อมต่อ";
 }
 
-function daysLeft(dueStr) {
-  const today = new Date(); today.setHours(0,0,0,0);
-  const due = new Date(dueStr + 'T00:00:00');
-  return Math.round((due - today) / 86400000);
+/* ══════ วิชา ══════ */
+function renderSubjects(){
+  const pick=document.getElementById("subjPick");
+  pick.innerHTML=`<button class="chip ${pickSubj?"":"on"}" data-pick="">ไม่ระบุวิชา</button>`+
+    subjects.map(s=>`<button class="chip ${pickSubj===s.id?"on":""}" data-pick="${s.id}">
+      <span class="sw" style="background:${s.color}"></span>${esc(s.name)}</button>`).join("");
+  document.getElementById("subjAdmin").innerHTML = subjects.length
+    ? subjects.map(s=>`<span class="chip"><span class="sw" style="background:${s.color}"></span>
+      ${esc(s.name)}<span class="x" data-rmsubj="${s.id}">×</span></span>`).join("")
+    : `<span class="hint" style="margin:0">ยังไม่มีวิชา — เพิ่มด้านล่าง</span>`;
+  const es=document.getElementById("edSubj");
+  es.innerHTML=`<option value="">ไม่ระบุวิชา</option>`+
+    subjects.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join("");
+  const nc=document.getElementById("newColor");
+  if(!nc.options.length) COLORS.forEach(([n,c,g])=>{
+    const o=document.createElement("option"); o.value=c+"|"+g; o.textContent="● "+n; o.style.color=c; nc.appendChild(o)});
 }
+document.getElementById("addSubj").onclick=async()=>{
+  const n=document.getElementById("newSubj").value.trim(); if(!n) return toast("ใส่ชื่อวิชาก่อน");
+  if(subjects.some(s=>s.name===n)) return toast("มีวิชานี้แล้ว");
+  const[c,g]=document.getElementById("newColor").value.split("|");
+  subjects.push({id:"s"+Date.now().toString(36),name:n,color:c,colorId:Number(g)});
+  document.getElementById("newSubj").value="";
+  if(await api("/api/settings","POST",{subjects})){ renderSubjects(); toast("เพิ่มวิชาแล้ว") }
+};
 
-function urgencyInfo(dueStr) {
-  const d = daysLeft(dueStr);
-  if (d < 0) return { cls: 'urgent', badge: 'urgent', text: `เลยกำหนด ${Math.abs(d)} วัน` };
-  if (d === 0) return { cls: 'urgent', badge: 'urgent', text: 'ครบกำหนดวันนี้' };
-  if (d <= 2) return { cls: 'urgent', badge: 'urgent', text: `เหลือ ${d} วัน` };
-  if (d <= 6) return { cls: 'soon', badge: 'soon', text: `เหลือ ${d} วัน` };
-  return { cls: '', badge: 'ok', text: `เหลือ ${d} วัน` };
-}
-
-function formatDate(dueStr) {
-  const d = new Date(dueStr + 'T00:00:00');
-  return d.toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
-}
-
-function bucketOf(t) {
-  const d = daysLeft(t.due);
-  if (d < 0) return 'overdue';
-  if (d === 0) return 'today';
-  if (d === 1) return 'tomorrow';
-  if (d <= 6) return 'week';
-  return 'later';
-}
-
-/* ---------- storage ----------
-   On-device storage (localStorage) is the source of truth — it survives closing
-   the app/tab completely and doesn't depend on being inside Claude.
-   window.storage (Claude's cloud sync) is used as a secondary best-effort mirror
-   when available, so the same data can also show up in a Claude chat preview. */
-let saveOk = true;
-
-function localGet(key) {
-  try { return localStorage.getItem(key); } catch (e) { return null; }
-}
-function localSet(key, value) {
-  try { localStorage.setItem(key, value); return true; } catch (e) { return false; }
-}
-
-async function loadTasks() {
-  const local = localGet('study-tasks');
-  if (local !== null) {
-    try { tasks = JSON.parse(local); return; } catch (e) {}
-  }
-  // nothing on-device yet — try Claude cloud storage as a one-time import
-  try {
-    if (window.storage) {
-      const result = await window.storage.get('study-tasks', false);
-      tasks = result ? JSON.parse(result.value) : [];
-      if (tasks.length) localSet('study-tasks', JSON.stringify(tasks));
-      return;
-    }
-  } catch (e) {}
-  tasks = [];
-}
-
-async function loadTheme() {
-  const local = localGet('study-theme');
-  if (local) { theme = local; applyTheme(); return; }
-  try {
-    if (window.storage) {
-      const r = await window.storage.get('study-theme', false);
-      theme = r ? r.value : 'light';
-      if (r) localSet('study-theme', theme);
-    }
-  } catch (e) { theme = 'light'; }
-  applyTheme();
-}
-
-async function saveTasks() {
-  const payload = JSON.stringify(tasks);
-  const onDeviceOk = localSet('study-tasks', payload);
-
-  // best-effort cloud mirror, never blocks or fails the on-device save
-  try { if (window.storage) await window.storage.set('study-tasks', payload, false); } catch (e) {}
-
-  saveOk = onDeviceOk;
-  document.getElementById('saveBanner').classList.toggle('show', !saveOk);
-}
-function retrySave() { saveTasks(); }
-
-/* ---------- theme ---------- */
-function applyTheme() {
-  document.body.classList.toggle('dark', theme === 'dark');
-  document.getElementById('themeToggle').textContent = theme === 'dark' ? '☀️' : '🌙';
-  document.getElementById('themeColorMeta').setAttribute('content', theme === 'dark' ? '#0F141F' : '#16233F');
-}
-async function toggleTheme() {
-  theme = theme === 'dark' ? 'light' : 'dark';
-  applyTheme();
-  localSet('study-theme', theme);
-  try { if (window.storage) await window.storage.set('study-theme', theme, false); } catch (e) {}
-}
-
-/* ---------- greeting & streak ---------- */
-function renderGreeting() {
-  const h = new Date().getHours();
-  let g = 'ดึกแล้ว ยังไม่นอนอีกเหรอ';
-  if (h >= 5 && h < 12) g = 'สวัสดีตอนเช้า';
-  else if (h >= 12 && h < 17) g = 'สวัสดีตอนบ่าย';
-  else if (h >= 17 && h < 22) g = 'สวัสดีตอนเย็น';
-  document.getElementById('greeting').textContent = g;
-
-  const streak = calcStreak();
-  const pill = document.getElementById('streakPill');
-  if (streak > 0) { pill.style.display = 'inline-flex'; document.getElementById('streakNum').textContent = streak; }
-  else pill.style.display = 'none';
-}
-
-function calcStreak() {
-  const doneDates = new Set(tasks.filter(t => t.done && t.completedAt).map(t => dateKey(new Date(t.completedAt))));
-  let d = new Date(); d.setHours(0,0,0,0);
-  if (!doneDates.has(dateKey(d))) d.setDate(d.getDate() - 1);
-  let streak = 0;
-  while (doneDates.has(dateKey(d))) { streak++; d.setDate(d.getDate() - 1); }
-  return streak;
-}
-
-/* ---------- task actions ---------- */
-function addTask() {
-  const subject = document.getElementById('subject').value.trim();
-  const title = document.getElementById('title').value.trim();
-  const due = document.getElementById('due').value;
-  if (!title || !due) { alert('กรอกชื่องานและวันครบกำหนดก่อนนะ'); return; }
-
-  tasks.push({ id: Date.now().toString(), subject: subject || 'ทั่วไป', title, due, done: false, completedAt: null });
-
-  document.getElementById('subject').value = '';
-  document.getElementById('title').value = '';
-  document.getElementById('due').value = '';
-
-  saveTasks(); render();
-}
-
-function toggleDone(id) {
-  const t = tasks.find(x => x.id === id);
-  if (!t) return;
-  t.done = !t.done;
-  t.completedAt = t.done ? new Date().toISOString() : null;
-  saveTasks(); render();
-  if (t.done) {
-    setTimeout(() => {
-      const el = document.querySelector(`[data-id="${id}"]`);
-      if (el) { el.classList.add('celebrate'); celebrate(el); setTimeout(() => el.classList.remove('celebrate'), 400); }
-    }, 10);
+/* ══════ render ══════ */
+function renderStrip(){
+  const el=document.getElementById("strip"); el.innerHTML="";
+  const base=new Date(); base.setHours(0,0,0,0); const tk=keyOf(base);
+  for(let i=-3;i<=17;i++){
+    const d=new Date(base); d.setDate(base.getDate()+i);
+    const k=keyOf(d), has=tasks.some(t=>t.date===k);
+    const div=document.createElement("div");
+    div.className="day"+(k===selDate?" sel":"")+(k===tk?" today":"");
+    div.innerHTML=`<span class="dw">${TH_D[d.getDay()]}</span><span class="dn">${d.getDate()}</span>
+      ${has?'<span class="dot"></span>':'<span style="height:5px"></span>'}`;
+    div.onclick=()=>{selDate=k;renderAll()};
+    el.appendChild(div);
   }
 }
-
-function celebrate(taskEl) {
-  const burst = document.createElement('div');
-  burst.className = 'confetti-burst';
-  const emojis = ['✨', '🎉', '⭐', '💫'];
-  for (let i = 0; i < 6; i++) {
-    const span = document.createElement('span');
-    span.textContent = emojis[i % emojis.length];
-    span.style.setProperty('--dx', (Math.random() * 80 - 40) + 'px');
-    span.style.setProperty('--dy', (Math.random() * -60 - 20) + 'px');
-    span.style.animationDelay = (i * 30) + 'ms';
-    burst.appendChild(span);
-  }
-  taskEl.appendChild(burst);
-  setTimeout(() => burst.remove(), 900);
-}
-
-function deleteTask(id) {
-  const idx = tasks.findIndex(x => x.id === id);
-  if (idx === -1) return;
-  lastDeleted = { task: tasks[idx], index: idx };
-  tasks.splice(idx, 1);
-  saveTasks(); render();
-  showSnackbar();
-}
-
-function showSnackbar() {
-  const el = document.getElementById('snackbar');
-  el.classList.add('show');
-  clearTimeout(snackbarTimer);
-  snackbarTimer = setTimeout(() => { el.classList.remove('show'); lastDeleted = null; }, 5000);
-}
-
-function undoDelete() {
-  if (!lastDeleted) return;
-  tasks.splice(lastDeleted.index, 0, lastDeleted.task);
-  lastDeleted = null;
-  clearTimeout(snackbarTimer);
-  document.getElementById('snackbar').classList.remove('show');
-  saveTasks(); render();
-}
-
-function setSort(s) {
-  currentSort = s;
-  document.getElementById('sortDate').classList.toggle('active', s === 'date');
-  document.getElementById('sortSubject').classList.toggle('active', s === 'subject');
-  render();
-}
-
-function setFilter(subject) { currentFilter = subject; render(); }
-
-function setDayFilter(key) {
-  currentDayFilter = (currentDayFilter === key) ? null : key;
-  render();
-}
-function clearDayFilter() { currentDayFilter = null; render(); }
-
-/* ---------- rendering ---------- */
-function baseFiltered() {
-  const search = document.getElementById('searchBox').value.trim().toLowerCase();
-  return tasks.filter(t =>
-    (currentFilter === 'all' || t.subject === currentFilter) &&
-    (search === '' || t.title.toLowerCase().includes(search) || t.subject.toLowerCase().includes(search))
-  );
-}
-
-function renderDayStrip() {
-  const base = baseFiltered().filter(t => !t.done);
-  const strip = document.getElementById('dayStrip');
-  let html = '';
-  for (let i = 0; i < 7; i++) {
-    const d = new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate() + i);
-    const key = dateKey(d);
-    const count = base.filter(t => t.due === key).length;
-    const active = currentDayFilter === key;
-    html += `<div class="day-chip ${active ? 'active' : ''}" onclick="setDayFilter('${key}')">
-      <div class="dname">${DAY_NAMES[d.getDay()]}</div>
-      <div class="dnum">${d.getDate()}</div>
-      <div class="ddot ${count === 0 ? 'hidden' : ''}"></div>
-    </div>`;
-  }
-  strip.innerHTML = html;
-
-  const bar = document.getElementById('dayFilterBar');
-  if (currentDayFilter) {
-    bar.classList.add('show');
-    const d = new Date(currentDayFilter + 'T00:00:00');
-    document.getElementById('dayFilterLabel').textContent = 'กำลังดูงานวันที่ ' + formatDate(currentDayFilter);
-  } else {
-    bar.classList.remove('show');
-  }
-}
-
-function renderStats(all) {
-  const pending = all.filter(t => !t.done);
-  const overdue = pending.filter(t => daysLeft(t.due) < 0).length;
-  const soon = pending.filter(t => { const d = daysLeft(t.due); return d >= 0 && d <= 6; }).length;
-  const done = all.filter(t => t.done).length;
-
-  document.getElementById('statOverdue').textContent = overdue;
-  document.getElementById('statOverdue').classList.toggle('zero', overdue === 0);
-  document.getElementById('statSoon').textContent = soon;
-  document.getElementById('statDone').textContent = done;
-
-  const pct = all.length ? Math.round((done / all.length) * 100) : 0;
-  document.getElementById('progressFill').style.width = pct + '%';
-}
-
-function renderChips() {
-  const subjects = [...new Set(tasks.map(t => t.subject))];
-  const chipsEl = document.getElementById('subjectChips');
-  if (subjects.length === 0) { chipsEl.innerHTML = ''; return; }
-  let html = `<div class="chip ${currentFilter === 'all' ? 'active' : ''}" onclick="setFilter('all')">ทั้งหมด</div>`;
-  subjects.forEach(s => {
-    const color = subjectColor(s);
-    const dotStyle = currentFilter === s ? 'background:white;' : `background:${color};`;
-    html += `<div class="chip ${currentFilter === s ? 'active' : ''}" onclick="setFilter('${escapeAttr(s)}')">
-      <span class="chip-dot" style="${dotStyle}"></span>${escapeHtml(s)}
-    </div>`;
-  });
-  chipsEl.innerHTML = html;
-}
-
-function taskHtml(t, done) {
-  const color = subjectColor(t.subject);
-  if (done) {
-    return `<div class="task done" data-id="${t.id}">
-      <div class="check-wrap"><input type="checkbox" checked onchange="toggleDone('${t.id}')"></div>
-      <div class="task-body">
-        <p class="task-title">${escapeHtml(t.title)}</p>
-        <div class="task-meta">
-          <span class="subject-tag"><span class="subject-dot" style="background:${color}"></span>${escapeHtml(t.subject)}</span>
-          <span>·</span><span>${formatDate(t.due)}</span>
-          <span class="badge done">เสร็จแล้ว</span>
-        </div>
-      </div>
-      <button class="del-btn" onclick="deleteTask('${t.id}')" title="ลบ">✕</button>
-    </div>`;
-  }
-  const u = urgencyInfo(t.due);
-  return `<div class="task ${u.cls}" data-id="${t.id}">
-    <div class="check-wrap"><input type="checkbox" onchange="toggleDone('${t.id}')"></div>
-    <div class="task-body">
-      <p class="task-title">${escapeHtml(t.title)}</p>
-      <div class="task-meta">
-        <span class="subject-tag"><span class="subject-dot" style="background:${color}"></span>${escapeHtml(t.subject)}</span>
-        <span>·</span><span>${formatDate(t.due)}</span>
-        <span class="badge ${u.badge}">${u.text}</span>
+function taskHTML(t){
+  const s=subjOf(t.subj);
+  return `<div class="task ${t.done?'done':''}">
+    ${s?`<span class="bar" style="background:${s.color}"></span>`:""}
+    <div class="cb ${t.done?'done':''}" data-toggle="${t.id}"></div>
+    <div class="tbody" data-edit="${t.id}">
+      <div class="ttl">${esc(t.title)}</div>
+      <div class="meta">
+        ${s?`<span class="tag" style="color:${s.color}">${esc(s.name)}</span>`:""}
+        <span>${fmtTH(t.date)}</span>${t.time?`<span>${t.time} น.</span>`:`<span>ทั้งวัน</span>`}
+        ${evIdOf(t)?`<span class="tag g">บนปฏิทิน</span>`
+                   :`<button class="tag up" data-push="${t.id}">↑ ส่งขึ้นปฏิทิน</button>`}
       </div>
     </div>
-    <button class="del-btn" onclick="deleteTask('${t.id}')" title="ลบ">✕</button>
-  </div>`;
+    <button class="del" data-del="${t.id}">×</button></div>`;
 }
-
-function emptyHtml(hasAnyTasks) {
-  return `<div class="empty"><span class="empty-emoji">📗</span>${hasAnyTasks ? 'ไม่พบงานที่ตรงกับตัวกรอง' : 'ไม่มีงานค้าง — เพิ่มงานใหม่ด้านบนได้เลย'}</div>`;
-}
-
-function sortList(list) {
-  if (currentSort === 'date') list.sort((a, b) => daysLeft(a.due) - daysLeft(b.due));
-  else list.sort((a, b) => a.subject.localeCompare(b.subject, 'th') || daysLeft(a.due) - daysLeft(b.due));
-  return list;
-}
-
-function renderPending(list) {
-  const container = document.getElementById('pending');
-
-  if (currentDayFilter) {
-    if (list.length === 0) { container.innerHTML = emptyHtml(tasks.length > 0); return; }
-    container.innerHTML = sortList(list).map(t => taskHtml(t, false)).join('');
-    return;
-  }
-
-  const order = ['overdue', 'today', 'tomorrow', 'week', 'later'];
-  const labels = { overdue: 'เลยกำหนด', today: 'วันนี้', tomorrow: 'พรุ่งนี้', week: 'สัปดาห์นี้', later: 'ภายหลัง' };
-  const groups = { overdue: [], today: [], tomorrow: [], week: [], later: [] };
-  list.forEach(t => groups[bucketOf(t)].push(t));
-
-  let html = '';
-  order.forEach(k => {
-    if (groups[k].length === 0) return;
-    html += `<div class="bucket-label">${labels[k]}<span class="bucket-count">${groups[k].length}</span></div>`;
-    html += sortList(groups[k]).map(t => taskHtml(t, false)).join('');
-  });
-  container.innerHTML = html || emptyHtml(tasks.length > 0);
-}
-
-function render() {
-  renderGreeting();
-  renderDayStrip();
-  renderStats(tasks);
-  renderChips();
-
-  let filtered = baseFiltered();
-  if (currentDayFilter) filtered = filtered.filter(t => t.due === currentDayFilter);
-
-  const pending = filtered.filter(t => !t.done);
-  const done = filtered.filter(t => t.done).sort((a, b) => new Date(b.completedAt || b.due) - new Date(a.completedAt || a.due));
-
-  renderPending(pending);
-
-  const doneLabel = document.getElementById('doneLabel');
-  const completedEl = document.getElementById('completed');
-  if (done.length > 0) {
-    doneLabel.style.display = 'block';
-    completedEl.innerHTML = done.map(t => taskHtml(t, true)).join('');
-  } else {
-    doneLabel.style.display = 'none';
-    completedEl.innerHTML = '';
+const sortT=a=>a.sort((x,y)=>(x.done-y.done)||((x.time||"99").localeCompare(y.time||"99")));
+function renderList(){
+  const el=document.getElementById("list");
+  if(view==="day"){
+    const items=sortT(tasks.filter(t=>t.date===selDate));
+    el.innerHTML=items.length?items.map(taskHTML).join("")
+      :`<div class="empty">ไม่มีงานวันที่ ${fmtTH(selDate)}<br><span style="font-size:12px">พิมพ์เพิ่มด้านล่าง</span></div>`;
+  }else{
+    const start=parseKey(selDate); start.setDate(start.getDate()-start.getDay());
+    let out="";
+    for(let i=0;i<7;i++){
+      const d=new Date(start); d.setDate(start.getDate()+i);
+      const k=keyOf(d), items=sortT(tasks.filter(t=>t.date===k));
+      out+=`<div class="wkhead"><span>${TH_DF[d.getDay()]} ${fmtTH(k)}${k===todayKey()?" · วันนี้":""}</span>
+        <span class="n">${items.filter(t=>t.done).length}/${items.length}</span></div>`;
+      out+=items.length?items.map(taskHTML).join("")
+        :`<div style="color:var(--muted);font-size:12px;padding:4px 0 8px">— ว่าง —</div>`;
+    }
+    el.innerHTML=out;
   }
 }
-
-function escapeHtml(str) { const div = document.createElement('div'); div.textContent = str; return div.innerHTML; }
-function escapeAttr(str) { return String(str).replace(/'/g, "\\'"); }
-
-/* ---------- install modal ---------- */
-function showInstallModal() {
-  const ua = navigator.userAgent;
-  const isIOS = /iPad|iPhone|iPod/.test(ua);
-  const isAndroid = /Android/.test(ua);
-  let steps;
-  if (isIOS) {
-    steps = `<ol><li>แตะปุ่มแชร์ (สี่เหลี่ยมมีลูกศรชี้ขึ้น) ที่แถบด้านล่างของ Safari</li><li>เลื่อนหาแล้วแตะ "เพิ่มไปที่หน้าจอโฮม"</li><li>แตะ "เพิ่ม" มุมขวาบน</li></ol>`;
-  } else if (isAndroid) {
-    steps = `<ol><li>แตะเมนู ⋮ มุมขวาบนของ Chrome</li><li>เลือก "เพิ่มไปยังหน้าจอหลัก" หรือ "ติดตั้งแอป"</li><li>ยืนยันเพื่อเพิ่มไอคอนลงหน้าจอ</li></ol>`;
-  } else {
-    steps = `<ol><li>เปิดเมนูเบราว์เซอร์</li><li>มองหาตัวเลือก "เพิ่มไปยังหน้าจอหลัก" หรือ "ติดตั้ง"</li><li>ยืนยันการติดตั้ง</li></ol>`;
-  }
-  document.getElementById('installSteps').innerHTML = steps;
-  document.getElementById('installModal').classList.add('show');
+function renderStreak(){
+  let n=0,d=new Date(); d.setHours(0,0,0,0);
+  for(let i=0;i<400;i++){ const day=tasks.filter(t=>t.date===keyOf(d));
+    if(day.length&&day.every(t=>t.done)){n++;d.setDate(d.getDate()-1)}else break }
+  const day=tasks.filter(t=>t.date===selDate);
+  document.getElementById("streak").textContent=
+    `${fmtTH(selDate)} · เสร็จ ${day.filter(t=>t.done).length}/${day.length}`+(n?` · 🔥 ${n} วันติด`:"");
 }
-function hideInstallModal() { document.getElementById('installModal').classList.remove('show'); }
+function renderAll(){renderStrip();renderList();renderStreak()}
 
-/* ---------- init ---------- */
-(async function init() {
-  await loadTheme();
-  await loadTasks();
-  render();
-})();
+/* ══════ actions ══════ */
+document.getElementById("vDay").onclick=()=>{view="day";vDay.classList.add("on");vWeek.classList.remove("on");renderList()};
+document.getElementById("vWeek").onclick=()=>{view="week";vWeek.classList.add("on");vDay.classList.remove("on");renderList()};
+document.getElementById("gearBtn").onclick=()=>document.getElementById("fold").classList.toggle("show");
+
+document.getElementById("addBtn").onclick=addTask;
+document.getElementById("newTitle").addEventListener("keydown",e=>{if(e.key==="Enter")addTask()});
+async function addTask(){
+  const i=document.getElementById("newTitle"),tm=document.getElementById("newTime");
+  const v=i.value.trim(); if(!v) return;
+  i.value="";tm.value="";i.blur();
+  if(await api("/api/task","POST",{title:v,date:selDate,time:tm.value,subj:pickSubj})) renderAll();
+}
+document.addEventListener("click",async e=>{
+  const pk=e.target.closest("[data-pick]"), rm=e.target.closest("[data-rmsubj]"),
+        tg=e.target.closest("[data-toggle]"), dl=e.target.closest("[data-del]"),
+        ps=e.target.closest("[data-push]"), ed=e.target.closest("[data-edit]");
+  if(pk){ pickSubj=pk.dataset.pick||null; renderSubjects(); return }
+  if(rm){ if(!confirm("ลบวิชานี้?")) return;
+    subjects=subjects.filter(s=>s.id!==rm.dataset.rmsubj);
+    if(await api("/api/settings","POST",{subjects})){renderSubjects();renderAll()} return }
+  if(ps){ e.stopPropagation();
+    if(await api("/api/task","PATCH",{id:ps.dataset.push,push:true})){toast("ส่งขึ้นปฏิทินแล้ว ✓");renderAll()} return }
+  if(tg){ const t=tasks.find(x=>x.id===tg.dataset.toggle); if(!t) return;
+    t.done=!t.done; renderAll();
+    if(await api("/api/task","PATCH",{id:t.id,done:t.done})) renderAll(); return }
+  if(dl){ removeTask(dl.dataset.del); return }
+  if(ed) openEdit(ed.dataset.edit);
+});
+async function removeTask(id){
+  const t=tasks.find(x=>x.id===id); if(!t) return;
+  let c=false;
+  if(evIdOf(t)) c=confirm("ลบออกจาก Google Calendar ด้วยหรือไม่?\n\nตกลง = ลบทั้งสองที่\nยกเลิก = ลบเฉพาะในแอป");
+  if(await api(`/api/task?id=${encodeURIComponent(id)}&cal=${c?1:0}`,"DELETE")) renderAll();
+}
+const sheet=document.getElementById("sheet");
+function openEdit(id){
+  const t=tasks.find(x=>x.id===id); if(!t) return;
+  editId=id; edTitle.value=t.title; edDate.value=t.date; edTime.value=t.time||"";
+  edSubj.value=t.subj||""; edDone.checked=!!t.done;
+  document.getElementById("edNote").textContent=evIdOf(t)
+    ?"ผูกกับ Google Calendar — บันทึกแล้วอัปเดตบนปฏิทินด้วย":"ยังไม่ได้ส่งขึ้นปฏิทิน";
+  sheet.classList.add("show");
+}
+const closeEdit=()=>{sheet.classList.remove("show");editId=null};
+document.getElementById("edCancel").onclick=closeEdit;
+sheet.onclick=e=>{if(e.target===sheet)closeEdit()};
+document.getElementById("edDel").onclick=()=>{const id=editId;closeEdit();removeTask(id)};
+document.getElementById("edSave").onclick=async()=>{
+  const id=editId;
+  if(!edTitle.value.trim()||!edDate.value) return toast("กรอกชื่องานและวันที่ให้ครบ");
+  const b={id,title:edTitle.value,date:edDate.value,time:edTime.value,subj:edSubj.value||null,done:edDone.checked};
+  closeEdit();
+  if(await api("/api/task","PATCH",b)){toast("บันทึกแล้ว ✓");renderAll()}
+};
+document.getElementById("authBtn").onclick=async()=>{
+  if(connected){const r=await api("/api/sync","POST"); if(r){toast(`ซิงก์แล้ว ${r.count} รายการ`);refresh()}}
+  else location.href=API+"/login?k="+encodeURIComponent(APP_KEY);
+};
+document.getElementById("calSel").onchange=async e=>{
+  if(await api("/api/settings","POST",{calId:e.target.value})){toast("เปลี่ยนปฏิทินแล้ว");refresh()}
+};
+optMark.onchange=optAuto.onchange=optNotify.onchange=async()=>{
+  await api("/api/settings","POST",{opts:{mark:optMark.checked,auto:optAuto.checked,notify:optNotify.checked}});
+};
+document.getElementById("pairBtn").onclick=async()=>{
+  if(await api("/api/line/pair","POST"))
+    alert("เปิดโหมดจับคู่แล้ว (15 นาที)\n\nตอนนี้ให้เปิด LINE แล้วพิมพ์อะไรก็ได้ส่งไปหาบอทของคุณ\nจากนั้นกลับมากด “ตั้งค่า” เพื่อรีเฟรช");
+};
+document.getElementById("testBtn").onclick=async()=>{
+  const r=await api("/api/line/test","POST"); if(r) toast(r.msg);
+};
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")refresh()});
+setInterval(refresh,5*60*1000);
+renderSubjects(); renderAll(); refresh();
 </script>
 </body>
 </html>
