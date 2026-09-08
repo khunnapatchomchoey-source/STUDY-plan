@@ -8,17 +8,6 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0f1115">
 <title>Study Planner</title>
-  <div class="header">
-  <h1>Study Planner</h1>
-  <!-- ตรงนี้คือปุ่ม วัน / สัปดาห์ ของเดิมที่คุณมีอยู่ -->
-</div>
-
-<!-- *** วางโค้ดจุดที่ 1 ตรงนี้ *** -->
-<div id="stats" style="margin: 10px 0; padding: 15px; background: #1a1a1a; border-radius: 12px; display: flex; justify-content: space-around; border: 1px solid #333;">
-  <div style="text-align: center;">งานค้าง<br><b id="todo-count" style="font-size: 1.2em; color: #ff9999;">0</b></div>
-  <div style="text-align: center;">ทำเสร็จแล้ว<br><b id="done-count" style="font-size: 1.2em; color: #99ff99;">0</b></div>
-  <div style="text-align: center;">รวม<br><b id="total-count" style="font-size: 1.2em;">0</b></div>
-</div>
 <style>
 :root{--bg:#0f1115;--card:#181b22;--line:#262a33;--text:#e8eaed;--muted:#9aa0aa;
 --accent:#7c9cff;--green:#4ade80;--red:#f87171;--amber:#fbbf24;
@@ -116,6 +105,10 @@ background:#232833;border:1px solid var(--line);padding:11px 17px;border-radius:
 z-index:60;opacity:0;transition:.25s;pointer-events:none;max-width:84%;text-align:center}
 .toast.show{opacity:1}
 .spin{opacity:.55}
+.statbox{display:flex;justify-content:space-around;text-align:center}
+.statbox div{flex:1}
+.statbox .n{font-size:1.3em;font-weight:700;display:block;margin-top:2px}
+.statbox .l{font-size:11px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -127,6 +120,12 @@ z-index:60;opacity:0;transition:.25s;pointer-events:none;max-width:84%;text-alig
 </header>
 <div class="strip" id="strip"></div>
 <main>
+  <div class="card statbox" id="stats">
+    <div><span class="n" id="todo-count" style="color:var(--red)">0</span><span class="l">งานค้าง</span></div>
+    <div><span class="n" id="done-count" style="color:var(--green)">0</span><span class="l">เสร็จแล้ว</span></div>
+    <div><span class="n" id="total-count">0</span><span class="l">รวม</span></div>
+  </div>
+
   <div class="card">
     <div class="row">
       <div style="display:flex;align-items:center;gap:8px">
@@ -213,6 +212,10 @@ function todayKey() {
          String(d.getDate()).padStart(2, "0");
 }
 const parseKey=k=>{const[y,m,d]=k.split("-").map(Number);return new Date(y,m-1,d)};
+/* ฟังก์ชันที่ renderStreak() เรียกใช้แต่ของเดิมไม่เคยประกาศไว้ — เพิ่มให้ตรงนี้ */
+function keyOf(d){
+  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+}
 const TH_M=["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
 const TH_D=["อา","จ","อ","พ","พฤ","ศ","ส"];
 const TH_DF=["อาทิตย์","จันทร์","อังคาร","พุธ","พฤหัสฯ","ศุกร์","เสาร์"];
@@ -291,34 +294,20 @@ document.getElementById("addSubj").onclick=async()=>{
 
 /* ══════ render ══════ */
 function renderStrip() {
-
   const el = document.getElementById("strip"); el.innerHTML = "";
-
   const base = new Date(); base.setHours(0,0,0,0);
-
-  const tk = base.getFullYear() + "-" + String(base.getMonth()+1).padStart(2,"0") + "-" + String(base.getDate()).padStart(2,"0");
-
+  const todayKey = base.getFullYear() + "-" + String(base.getMonth()+1).padStart(2,"0") + "-" + String(base.getDate()).padStart(2,"0");
 
   for(let i=-3; i<=17; i++){
-
     const d = new Date(base); d.setDate(base.getDate()+i);
-
     const k = d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
-
     const has = tasks.some(t=>t.date===k);
-
     const div = document.createElement("div");
-
-    div.className = "day" + (k===selDate ? " sel" : "") + (k===tk ? " today" : "");
-
+    div.className = "day" + (k===selDate ? " sel" : "") + (k===todayKey ? " today" : "");
     div.innerHTML = `<span class="dw">${["อา","จ","อ","พ","พฤ","ศ","ส"][d.getDay()]}</span><span class="dn">${d.getDate()}</span>${has?'<span class="dot"></span>':'<span style="height:5px"></span>'}`;
-
     div.onclick = () => { selDate=k; renderAll(); };
-
     el.appendChild(div);
-
   }
-
 }
 function taskHTML(t){
   const s=subjOf(t.subj);
@@ -348,7 +337,7 @@ function renderList(){
     let out="";
     for(let i=0;i<7;i++){
       const d=new Date(start); d.setDate(start.getDate()+i);
-      d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0"), items=sortT(tasks.filter(t=>t.date===k));
+      const k=keyOf(d), items=sortT(tasks.filter(t=>t.date===k));
       out+=`<div class="wkhead"><span>${TH_DF[d.getDay()]} ${fmtTH(k)}${k===todayKey()?" · วันนี้":""}</span>
         <span class="n">${items.filter(t=>t.done).length}/${items.length}</span></div>`;
       out+=items.length?items.map(taskHTML).join("")
@@ -365,7 +354,13 @@ function renderStreak(){
   document.getElementById("streak").textContent=
     `${fmtTH(selDate)} · เสร็จ ${day.filter(t=>t.done).length}/${day.length}`+(n?` · 🔥 ${n} วันติด`:"");
 }
-function renderAll(){renderStrip();renderList();renderStreak()}
+function updateStats(){
+  const done = tasks.filter(t => t.done).length;
+  document.getElementById("todo-count").textContent = tasks.length - done;
+  document.getElementById("done-count").textContent = done;
+  document.getElementById("total-count").textContent = tasks.length;
+}
+function renderAll(){renderStrip();renderList();renderStreak();updateStats()}
 
 /* ══════ actions ══════ */
 document.getElementById("vDay").onclick=()=>{view="day";vDay.classList.add("on");vWeek.classList.remove("on");renderList()};
