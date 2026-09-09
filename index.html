@@ -143,10 +143,15 @@ border:1px solid var(--line);border-radius:12px}
   <div class="card">
     <div class="row">
       <strong style="font-size:14px">📋 งานที่เหลือ (เรียงตามความด่วน)</strong>
-      <span class="hint" style="margin:0" id="dashCount">0 งาน</span>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="hint" style="margin:0" id="dashCount">0 งาน</span>
+        <button class="btn ghost sm" id="dashToggle" style="padding:6px 10px;min-height:0">▾</button>
+      </div>
     </div>
-    <div class="chips" id="dashSubjChips"></div>
-    <div id="dashList" style="margin-top:12px"></div>
+    <div class="fold show" id="dashFold">
+      <div class="chips" id="dashSubjChips"></div>
+      <div id="dashList" style="margin-top:12px"></div>
+    </div>
   </div>
 
   <div class="card">
@@ -175,7 +180,7 @@ border:1px solid var(--line);border-radius:12px}
       </div>
 
       <div style="margin-top:16px;font-size:13px;font-weight:600">🎨 วิชา</div>
-      <div class="hint" style="margin-top:4px">แตะจุดสีข้างชื่อวิชาเพื่อเปลี่ยนสีได้ทุกเมื่อ</div>
+      <div class="hint" style="margin-top:4px">แตะจุดสีข้างชื่อวิชาเพื่อเปลี่ยนสีในแอปได้ทุกเมื่อ — ไม่กระทบสีของงานที่ซิงก์ขึ้น Google Calendar ไปแล้ว</div>
       <div class="chips" id="subjAdmin"></div>
       <div class="colorrow" style="margin-top:10px">
         <input type="text" id="newSubj" placeholder="ชื่อวิชาใหม่" style="margin-top:0">
@@ -343,7 +348,8 @@ document.getElementById("newColor").onchange=e=>{
 document.addEventListener("input",e=>{
   const cp=e.target.closest("[data-subjcolor]"); if(!cp) return;
   const subj=subjects.find(s=>s.id===cp.dataset.subjcolor); if(!subj) return;
-  subj.color=cp.value; subj.colorId=nearestColorId(cp.value);
+  /* เปลี่ยนแค่สีที่โชว์ในแอป — ไม่แตะ colorId เดิม เพื่อไม่ให้กระทบสีของงานที่ซิงก์ขึ้น Google Calendar ไปแล้ว */
+  subj.color=cp.value;
   renderSubjects(); renderAll();
 });
 document.addEventListener("change",async e=>{
@@ -452,6 +458,16 @@ function renderAll(){renderStrip();renderList();renderStreak();updateStats();ren
 document.getElementById("vDay").onclick=()=>{view="day";vDay.classList.add("on");vWeek.classList.remove("on");renderList()};
 document.getElementById("vWeek").onclick=()=>{view="week";vWeek.classList.add("on");vDay.classList.remove("on");renderList()};
 document.getElementById("gearBtn").onclick=()=>document.getElementById("fold").classList.toggle("show");
+
+const dashFoldEl=document.getElementById("dashFold"), dashToggleBtn=document.getElementById("dashToggle");
+let dashOpen = localStorage.getItem("sp_dashopen");
+dashOpen = dashOpen===null ? true : dashOpen==="1";
+function applyDashFold(){
+  dashFoldEl.classList.toggle("show", dashOpen);
+  dashToggleBtn.textContent = dashOpen ? "▾" : "▸";
+}
+dashToggleBtn.onclick=()=>{ dashOpen=!dashOpen; localStorage.setItem("sp_dashopen", dashOpen?"1":"0"); applyDashFold(); };
+applyDashFold();
 
 document.getElementById("addBtn").onclick=addTask;
 document.getElementById("newTitle").addEventListener("keydown",e=>{if(e.key==="Enter")addTask()});
