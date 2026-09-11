@@ -157,7 +157,7 @@ border:1px solid var(--line);border-radius:12px}
 
   <div class="card">
     <div class="row">
-      <strong style="font-size:14px">📋 งานที่เหลือ (เรียงตามความด่วน)</strong>
+      <strong style="font-size:14px">งานที่เหลือ (เรียงตามความด่วน)</strong>
       <div style="display:flex;align-items:center;gap:8px">
         <span class="hint" style="margin:0" id="dashCount">0 งาน</span>
         <button class="btn ghost sm" id="dashToggle" style="padding:6px 10px;min-height:0">▾</button>
@@ -187,14 +187,14 @@ border:1px solid var(--line);border-radius:12px}
       <label class="opt"><input type="checkbox" id="optAuto">เพิ่มงานใหม่ → ส่งขึ้นปฏิทินทันที</label>
       <label class="opt"><input type="checkbox" id="optNotify">เปิดแจ้งเตือนเข้า LINE</label>
 
-      <div style="margin-top:14px;font-size:13px;font-weight:600">🔔 LINE</div>
+      <div class="sectlabel">LINE</div>
       <div class="hint" id="lineInfo">—</div>
       <div style="display:flex;gap:8px;margin-top:8px">
         <button class="btn ghost sm" id="pairBtn">จับคู่ LINE</button>
         <button class="btn ghost sm" id="testBtn">ส่งทดสอบ</button>
       </div>
 
-      <div style="margin-top:16px;font-size:13px;font-weight:600">🎨 วิชา</div>
+      <div class="sectlabel">วิชา</div>
       <div class="hint" style="margin-top:4px">แตะจุดสีข้างชื่อวิชาเพื่อเปลี่ยนสีในแอปได้ทุกเมื่อ — ไม่กระทบสีของงานที่ซิงก์ขึ้น Google Calendar ไปแล้ว</div>
       <div class="chips" id="subjAdmin"></div>
       <div class="colorrow" style="margin-top:10px">
@@ -288,6 +288,13 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",
 const subjOf=id=>subjects.find(s=>s.id===id);
 const evIdOf=t=>t.src==="gcal"?t.id.slice(5):(t.gcalId||null);
 
+/* สีที่ผู้ใช้ปรับเองในแอป — เก็บไว้ในเครื่องเท่านั้น ไม่ส่งขึ้น backend เด็ดขาด
+   จึงไม่มีทางไปกระทบสีบน Google Calendar ได้อีก ไม่ว่า backend จะทำอะไรกับ colorId ก็ตาม */
+let colorOverrides = JSON.parse(localStorage.getItem("sp_coloroverrides")||"{}");
+function applyColorOverrides(){
+  subjects.forEach(s=>{ if(colorOverrides[s.id]) s.color=colorOverrides[s.id]; });
+}
+
 let toastT;
 function toast(m){const e=document.getElementById("toast");e.textContent=m;e.classList.add("show");
 clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove("show"),2800)}
@@ -309,6 +316,7 @@ async function refresh(){
   const s=await api("/api/state");
   if(!s){ setStatus("off","ออฟไลน์ · แสดงข้อมูลที่เก็บไว้"); renderAll(); return }
   connected=s.connected; calId=s.calId; opts=s.opts||opts; subjects=s.subjects||[]; lineOn=s.line;
+  applyColorOverrides();
   optMark.checked=!!opts.mark; optAuto.checked=!!opts.auto; optNotify.checked=opts.notify!==false;
   const sel=document.getElementById("calSel");
   if(s.calendars?.length){ sel.style.display="block"; sel.innerHTML="";
@@ -363,13 +371,16 @@ document.getElementById("newColor").onchange=e=>{
 document.addEventListener("input",e=>{
   const cp=e.target.closest("[data-subjcolor]"); if(!cp) return;
   const subj=subjects.find(s=>s.id===cp.dataset.subjcolor); if(!subj) return;
-  /* เปลี่ยนแค่สีที่โชว์ในแอป — ไม่แตะ colorId เดิม เพื่อไม่ให้กระทบสีของงานที่ซิงก์ขึ้น Google Calendar ไปแล้ว */
+  /* เปลี่ยนแค่สีที่โชว์ในแอป เก็บลง localStorage เท่านั้น — ไม่เรียก /api/settings เลย
+     เพื่อรับประกันว่าจะไม่มีทางไปกระทบสีของงานที่ซิงก์ขึ้น Google Calendar ได้อีก */
   subj.color=cp.value;
+  colorOverrides[subj.id]=cp.value;
+  localStorage.setItem("sp_coloroverrides",JSON.stringify(colorOverrides));
   renderSubjects(); renderAll();
 });
-document.addEventListener("change",async e=>{
+document.addEventListener("change",e=>{
   const cp=e.target.closest("[data-subjcolor]"); if(!cp) return;
-  if(await api("/api/settings","POST",{subjects})) toast("เปลี่ยนสีวิชาแล้ว");
+  toast("เปลี่ยนสีในแอปแล้ว (ไม่กระทบ Google Calendar)");
 });
 document.getElementById("addSubj").onclick=async()=>{
   const n=document.getElementById("newSubj").value.trim(); if(!n) return toast("ใส่ชื่อวิชาก่อน");
@@ -440,7 +451,7 @@ function renderStreak(){
     if(day.length&&day.every(t=>t.done)){n++;d.setDate(d.getDate()-1)}else break }
   const day=tasks.filter(t=>t.date===selDate);
   document.getElementById("streak").textContent=
-    `${fmtTH(selDate)} · เสร็จ ${day.filter(t=>t.done).length}/${day.length}`+(n?` · 🔥 ${n} วันติด`:"");
+    `${fmtTH(selDate)} · เสร็จ ${day.filter(t=>t.done).length}/${day.length}`+(n?` · ต่อเนื่อง ${n} วัน`:"");
 }
 function updateStats(){
   const done = tasks.filter(t => t.done).length;
@@ -465,7 +476,7 @@ function renderDashboard(){
     html+=`<div class="wkhead"><span><span class="urg ${k}">${labels[k]}</span></span><span class="n">${groups[k].length}</span></div>`;
     html+=groups[k].map(taskHTML).join("");
   });
-  document.getElementById("dashList").innerHTML = html || `<div class="empty">ไม่มีงานค้างเลย 🎉</div>`;
+  document.getElementById("dashList").innerHTML = html || `<div class="empty">ไม่มีงานค้างเลย</div>`;
 }
 function renderAll(){renderStrip();renderList();renderStreak();updateStats();renderDashboard()}
 
