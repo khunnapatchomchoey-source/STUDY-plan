@@ -6,16 +6,16 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Planner">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0f1115">
+<meta name="theme-color" content="#0a0d0a">
 <title>Study Planner</title>
 <style>
-:root{--bg:#0f1115;--card:#181b22;--line:#262a33;--text:#e8eaed;--muted:#9aa0aa;
---accent:#7c9cff;--green:#4ade80;--red:#f87171;--amber:#fbbf24;
+:root{--bg:#0a0d0a;--card:#141a15;--line:#232b23;--text:#e9f5ec;--muted:#93a696;
+--accent:#8CE6A8;--green:#8CE6A8;--red:#f87171;--amber:#fbbf24;
 --st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px);
 --sl:env(safe-area-inset-left,0px);--sr:env(safe-area-inset-right,0px)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{overscroll-behavior-y:none}
-body{margin:0;background:var(--bg);background-image:radial-gradient(circle at 15% 0%,rgba(124,156,255,.08),transparent 45%),radial-gradient(circle at 85% 8%,rgba(124,156,255,.05),transparent 40%);background-attachment:fixed;color:var(--text);
+body{margin:0;background:var(--bg);background-image:radial-gradient(circle at 15% 0%,rgba(140,230,168,.08),transparent 45%),radial-gradient(circle at 85% 8%,rgba(140,230,168,.05),transparent 40%);background-attachment:fixed;color:var(--text);
 font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Noto Sans Thai",sans-serif;
 -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
 padding-left:var(--sl);padding-right:var(--sr)}
@@ -27,7 +27,7 @@ h1{margin:0;font-size:22px;font-weight:800;letter-spacing:-.4px}
 .seg{display:flex;background:#11141a;border:1px solid var(--line);border-radius:11px;overflow:hidden;flex:0 0 auto}
 .seg button{background:none;color:var(--muted);padding:8px 14px;min-height:0;font-size:12.5px;border-radius:0;
 font-weight:600;transition:background .15s ease,color .15s ease}
-.seg button.on{background:var(--accent);color:#0f1115}
+.seg button.on{background:var(--accent);color:#0a0d0a}
 main{padding:16px 18px calc(var(--sb) + 178px)}
 .strip{display:flex;gap:8px;overflow-x:auto;padding:14px 18px;scrollbar-width:none}
 .strip::-webkit-scrollbar{display:none}
@@ -35,12 +35,12 @@ main{padding:16px 18px calc(var(--sb) + 178px)}
 border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
 transition:transform .12s ease,background .15s ease,border-color .15s ease}
 .day:active{transform:scale(.94)}
-.day.sel{background:var(--accent);border-color:var(--accent);color:#0f1115;font-weight:700;
-box-shadow:0 4px 14px rgba(124,156,255,.35)}
+.day.sel{background:var(--accent);border-color:var(--accent);color:#0a0d0a;font-weight:700;
+box-shadow:0 4px 14px rgba(140,230,168,.35)}
 .day.today:not(.sel){border-color:var(--accent)}
 .day .dw{font-size:11px;opacity:.7}.day .dn{font-size:19px;font-weight:700}
 .day .dot{width:5px;height:5px;border-radius:50%;background:var(--accent)}
-.day.sel .dot{background:#0f1115}
+.day.sel .dot{background:#0a0d0a}
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:14px;
 box-shadow:0 1px 0 rgba(255,255,255,.02) inset,0 8px 24px -12px rgba(0,0,0,.5)}
 .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
@@ -54,7 +54,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
 select{margin-top:10px}
 button{border:none;border-radius:13px;padding:12px 16px;min-height:46px;font-weight:600;
 transition:transform .1s ease,opacity .1s ease}
-.btn{background:var(--accent);color:#0f1115}
+.btn{background:var(--accent);color:#0a0d0a}
 .btn.ghost{background:#11141a;color:var(--text);border:1px solid var(--line)}
 .btn.danger{background:#3a1f22;color:var(--red);border:1px solid #52272c}
 .btn.sm{padding:8px 13px;min-height:36px;font-size:12px}
@@ -69,7 +69,7 @@ transition:transform .1s ease,opacity .1s ease}
 border-radius:20px;padding:7px 12px;font-size:12.5px;min-height:0;transition:transform .1s ease,background .15s ease,border-color .15s ease}
 .chip:active{transform:scale(.96)}
 .chip .sw{width:10px;height:10px;border-radius:50%;flex:0 0 auto}
-.chip.on{border-color:var(--accent);background:#232f4d}
+.chip.on{border-color:var(--accent);background:#16301f}
 .chip .x{color:var(--muted);font-weight:700;padding-left:2px}
 .task{display:flex;gap:12px;align-items:flex-start;background:var(--card);
 border:1px solid var(--line);border-radius:15px;padding:14px;margin-bottom:9px;position:relative;overflow:hidden;
@@ -81,14 +81,14 @@ transition:transform .12s ease,background .15s ease,border-color .15s ease}
 .cb::after{content:"";position:absolute;inset:-11px}
 .cb.done{background:var(--green);border-color:var(--green)}
 .cb.done::before{content:"✓";position:absolute;inset:0;display:flex;align-items:center;
-justify-content:center;color:#0f1115;font-size:15px;font-weight:900}
+justify-content:center;color:#0a0d0a;font-size:15px;font-weight:900}
 .tbody{flex:1;min-width:0}
 .ttl{font-size:15px;line-height:1.4;word-break:break-word}
 .task.done .ttl{text-decoration:line-through;color:var(--muted)}
 .meta{font-size:12px;color:var(--muted);margin-top:5px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .tag{background:#232833;padding:2px 8px;border-radius:6px;font-size:11px}
 .tag.g{background:#1e3a2f;color:var(--green)}
-.tag.up{background:#232f4d;color:var(--accent);border:none;padding:4px 10px;min-height:0;font-size:11px;font-weight:600;border-radius:6px}
+.tag.up{background:#16301f;color:var(--accent);border:none;padding:4px 10px;min-height:0;font-size:11px;font-weight:600;border-radius:6px}
 .del{background:none;border:none;color:var(--muted);font-size:20px;padding:0;width:32px;height:32px;min-height:32px;position:relative;flex:0 0 auto}
 .del::after{content:"";position:absolute;inset:-8px}
 .empty{text-align:center;color:var(--muted);padding:40px 0;font-size:14px;line-height:1.7}
@@ -149,12 +149,12 @@ justify-content:center;background:#11141a;border:1px solid var(--line);color:var
 transition:transform .1s ease,background .15s ease,color .15s ease,border-color .15s ease}
 .iconbtn svg{width:18px;height:18px}
 .iconbtn:active{transform:scale(.92)}
-.iconbtn.active{background:var(--accent);color:#0f1115;border-color:var(--accent)}
+.iconbtn.active{background:var(--accent);color:#0a0d0a;border-color:var(--accent)}
 .iconbtn.chevron svg{transition:transform .2s ease}
 .iconbtn.chevron.open svg{transform:rotate(180deg)}
-.fab{width:48px;height:48px;min-height:0;border-radius:50%;background:var(--accent);color:#0f1115;
+.fab{width:48px;height:48px;min-height:0;border-radius:50%;background:var(--accent);color:#0a0d0a;
 display:flex;align-items:center;justify-content:center;flex:0 0 auto;padding:0;
-box-shadow:0 6px 18px -4px rgba(124,156,255,.55);transition:transform .1s ease,opacity .1s ease}
+box-shadow:0 6px 18px -4px rgba(140,230,168,.45);transition:transform .1s ease,opacity .1s ease}
 .fab svg{width:22px;height:22px}
 .fab:active{transform:scale(.92);opacity:.9}
 .quickadd{display:flex;gap:10px;margin-top:8px;align-items:center}
@@ -225,7 +225,7 @@ box-shadow:0 6px 18px -4px rgba(124,156,255,.55);transition:transform .1s ease,o
       <div class="chips" id="subjAdmin"></div>
       <div class="colorrow" style="margin-top:10px">
         <input type="text" id="newSubj" placeholder="ชื่อวิชาใหม่" style="margin-top:0">
-        <input type="color" id="newColorCustom" value="#7c9cff" title="กำหนดสีเอง">
+        <input type="color" id="newColorCustom" value="#8CE6A8" title="กำหนดสีเอง">
         <button class="btn sm" id="addSubj" style="flex:0 0 auto">เพิ่ม</button>
       </div>
       <select id="newColor" style="margin-top:8px"></select>
