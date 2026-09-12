@@ -120,9 +120,13 @@ box-shadow:0 8px 24px -8px rgba(0,0,0,.5)}
 .toast.show{opacity:1}
 .spin{opacity:.55}
 .statbox{display:flex;gap:8px;text-align:center}
-.statbox div{flex:1;background:#11141a;border:1px solid var(--line);border-radius:13px;padding:10px 4px}
+.statbox div{flex:1;background:#11141a;border:1px solid var(--line);border-radius:13px;padding:10px 4px;
+cursor:pointer;transition:transform .1s ease,border-color .15s ease}
+.statbox div:active{transform:scale(.95)}
 .statbox .n{font-size:1.35em;font-weight:800;display:block;letter-spacing:-.3px}
 .statbox .l{font-size:10.5px;color:var(--muted);margin-top:2px;display:block}
+.seg.wide{width:100%}
+.seg.wide button{flex:1}
 .urg{font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;flex:0 0 auto}
 .urg.overdue{background:#3a1f22;color:var(--red)}
 .urg.today{background:#3a1f22;color:var(--red)}
@@ -140,6 +144,22 @@ border:1px solid var(--line);border-radius:12px}
 .sectlabel{font-size:12.5px;font-weight:700;color:var(--text);margin-top:18px;padding-top:16px;
 border-top:1px solid var(--line);letter-spacing:-.1px}
 .sectlabel.first{border-top:none;padding-top:0;margin-top:0}
+.iconbtn{width:38px;height:38px;min-height:0;padding:0;border-radius:50%;display:flex;align-items:center;
+justify-content:center;background:#11141a;border:1px solid var(--line);color:var(--text);flex:0 0 auto;
+transition:transform .1s ease,background .15s ease,color .15s ease,border-color .15s ease}
+.iconbtn svg{width:18px;height:18px}
+.iconbtn:active{transform:scale(.92)}
+.iconbtn.active{background:var(--accent);color:#0f1115;border-color:var(--accent)}
+.iconbtn.chevron svg{transition:transform .2s ease}
+.iconbtn.chevron.open svg{transform:rotate(180deg)}
+.fab{width:48px;height:48px;min-height:0;border-radius:50%;background:var(--accent);color:#0f1115;
+display:flex;align-items:center;justify-content:center;flex:0 0 auto;padding:0;
+box-shadow:0 6px 18px -4px rgba(124,156,255,.55);transition:transform .1s ease,opacity .1s ease}
+.fab svg{width:22px;height:22px}
+.fab:active{transform:scale(.92);opacity:.9}
+.quickadd{display:flex;gap:10px;margin-top:8px;align-items:center}
+.quickadd input[type=text]{border-radius:24px;padding-left:18px}
+.quickadd input[type=time]{flex:0 0 92px;border-radius:24px;text-align:center;padding-left:0;padding-right:0}
 </style>
 </head>
 <body>
@@ -152,9 +172,9 @@ border-top:1px solid var(--line);letter-spacing:-.1px}
 <div class="strip" id="strip"></div>
 <main>
   <div class="card statbox" id="stats">
-    <div><span class="n" id="todo-count" style="color:var(--red)">0</span><span class="l">งานค้าง</span></div>
-    <div><span class="n" id="done-count" style="color:var(--green)">0</span><span class="l">เสร็จแล้ว</span></div>
-    <div><span class="n" id="total-count">0</span><span class="l">รวม</span></div>
+    <div data-stattab="todo"><span class="n" id="todo-count" style="color:var(--red)">0</span><span class="l">งานค้าง</span></div>
+    <div data-stattab="done"><span class="n" id="done-count" style="color:var(--green)">0</span><span class="l">เสร็จแล้ว</span></div>
+    <div data-stattab="all"><span class="n" id="total-count">0</span><span class="l">รวม</span></div>
   </div>
 
   <div class="card">
@@ -162,7 +182,9 @@ border-top:1px solid var(--line);letter-spacing:-.1px}
       <strong style="font-size:14px">งานที่เหลือ (เรียงตามความด่วน)</strong>
       <div style="display:flex;align-items:center;gap:8px">
         <span class="hint" style="margin:0" id="dashCount">0 งาน</span>
-        <button class="btn ghost sm" id="dashToggle" style="padding:6px 10px;min-height:0">▾</button>
+        <button class="iconbtn chevron open" id="dashToggle" title="ย่อ/ขยาย">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
       </div>
     </div>
     <div class="fold show" id="dashFold">
@@ -176,8 +198,10 @@ border-top:1px solid var(--line);letter-spacing:-.1px}
       <div style="display:flex;align-items:center;gap:8px">
         <span class="dotstat" id="stat"></span><strong style="font-size:14px">การเชื่อมต่อ</strong>
       </div>
-      <div style="display:flex;gap:7px">
-        <button class="btn ghost sm" id="gearBtn">ตั้งค่า</button>
+      <div style="display:flex;gap:8px">
+        <button class="iconbtn" id="gearBtn" title="ตั้งค่า">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </button>
         <button class="btn ghost sm" id="authBtn">เชื่อมต่อ</button>
       </div>
     </div>
@@ -213,9 +237,12 @@ border-top:1px solid var(--line);letter-spacing:-.1px}
 
 <div class="addbar">
   <div class="subjrow" id="subjPick"></div>
-  <div class="addrow">
+  <div class="quickadd">
     <input type="text" id="newTitle" placeholder="เพิ่มงานใหม่…" autocomplete="off" enterkeyhint="done">
-    <input type="time" id="newTime"><button class="btn" id="addBtn">เพิ่ม</button>
+    <input type="time" id="newTime">
+    <button class="fab" id="addBtn" title="เพิ่มงาน">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+    </button>
   </div>
 </div>
 
@@ -231,6 +258,19 @@ border-top:1px solid var(--line);letter-spacing:-.1px}
     <button class="btn ghost" id="edCancel">ยกเลิก</button>
     <button class="btn" id="edSave">บันทึก</button>
   </div>
+</div></div>
+
+<div class="sheet" id="overviewSheet"><div class="sheetbox">
+  <div class="row" style="margin-bottom:14px">
+    <h3 style="margin:0">ภาพรวมงาน</h3>
+    <button class="btn ghost sm" id="ovClose">ปิด</button>
+  </div>
+  <div class="seg wide">
+    <button id="ovTodo">ค้าง</button>
+    <button id="ovDone">เสร็จ</button>
+    <button id="ovAll" class="on">รวม</button>
+  </div>
+  <div id="ovList" style="margin-top:14px"></div>
 </div></div>
 <div class="toast" id="toast"></div>
 
@@ -479,19 +519,58 @@ function renderDashboard(){
   });
   document.getElementById("dashList").innerHTML = html || `<div class="empty">ไม่มีงานค้างเลย</div>`;
 }
-function renderAll(){renderStrip();renderList();renderStreak();updateStats();renderDashboard()}
+function renderOverview(){
+  const pending = tasks.filter(t=>!t.done).slice()
+    .sort((a,b)=>(a.date+(a.time||"99")).localeCompare(b.date+(b.time||"99")));
+  const done = tasks.filter(t=>t.done).slice()
+    .sort((a,b)=> b.date.localeCompare(a.date) || (b.time||"").localeCompare(a.time||""));
+  const el=document.getElementById("ovList");
+  if(ovTab==="todo"){
+    el.innerHTML = pending.length ? pending.map(taskHTML).join("") : `<div class="empty">ไม่มีงานค้าง</div>`;
+  }else if(ovTab==="done"){
+    el.innerHTML = done.length ? done.map(taskHTML).join("") : `<div class="empty">ยังไม่มีงานที่เสร็จ</div>`;
+  }else{
+    let html="";
+    html+=`<div class="wkhead"><span>งานค้าง</span><span class="n">${pending.length}</span></div>`;
+    html+=pending.length ? pending.map(taskHTML).join("") : `<div style="color:var(--muted);font-size:12px;padding:4px 0 8px">— ไม่มี —</div>`;
+    html+=`<div class="wkhead"><span>เสร็จแล้ว</span><span class="n">${done.length}</span></div>`;
+    html+=done.length ? done.map(taskHTML).join("") : `<div style="color:var(--muted);font-size:12px;padding:4px 0 8px">— ไม่มี —</div>`;
+    el.innerHTML=html;
+  }
+}
+let ovTab="all";
+function syncOvTabs(){
+  document.getElementById("ovTodo").classList.toggle("on",ovTab==="todo");
+  document.getElementById("ovDone").classList.toggle("on",ovTab==="done");
+  document.getElementById("ovAll").classList.toggle("on",ovTab==="all");
+}
+function openOverview(tab){
+  ovTab=tab; syncOvTabs(); renderOverview();
+  document.getElementById("overviewSheet").classList.add("show");
+}
+const closeOverview=()=>document.getElementById("overviewSheet").classList.remove("show");
+document.getElementById("ovClose").onclick=closeOverview;
+document.getElementById("overviewSheet").onclick=e=>{ if(e.target.id==="overviewSheet") closeOverview(); };
+document.getElementById("ovTodo").onclick=()=>{ovTab="todo";syncOvTabs();renderOverview();};
+document.getElementById("ovDone").onclick=()=>{ovTab="done";syncOvTabs();renderOverview();};
+document.getElementById("ovAll").onclick=()=>{ovTab="all";syncOvTabs();renderOverview();};
+
+function renderAll(){renderStrip();renderList();renderStreak();updateStats();renderDashboard();renderOverview()}
 
 /* ══════ actions ══════ */
 document.getElementById("vDay").onclick=()=>{view="day";vDay.classList.add("on");vWeek.classList.remove("on");renderList()};
 document.getElementById("vWeek").onclick=()=>{view="week";vWeek.classList.add("on");vDay.classList.remove("on");renderList()};
-document.getElementById("gearBtn").onclick=()=>document.getElementById("fold").classList.toggle("show");
+document.getElementById("gearBtn").onclick=()=>{
+  const open=document.getElementById("fold").classList.toggle("show");
+  document.getElementById("gearBtn").classList.toggle("active",open);
+};
 
 const dashFoldEl=document.getElementById("dashFold"), dashToggleBtn=document.getElementById("dashToggle");
 let dashOpen = localStorage.getItem("sp_dashopen");
 dashOpen = dashOpen===null ? true : dashOpen==="1";
 function applyDashFold(){
   dashFoldEl.classList.toggle("show", dashOpen);
-  dashToggleBtn.textContent = dashOpen ? "▾" : "▸";
+  dashToggleBtn.classList.toggle("open", dashOpen);
 }
 dashToggleBtn.onclick=()=>{ dashOpen=!dashOpen; localStorage.setItem("sp_dashopen", dashOpen?"1":"0"); applyDashFold(); };
 applyDashFold();
@@ -508,7 +587,8 @@ document.addEventListener("click",async e=>{
   const pk=e.target.closest("[data-pick]"), rm=e.target.closest("[data-rmsubj]"),
         tg=e.target.closest("[data-toggle]"), dl=e.target.closest("[data-del]"),
         ps=e.target.closest("[data-push]"), ed=e.target.closest("[data-edit]"),
-        df=e.target.closest("[data-dashfilter]");
+        df=e.target.closest("[data-dashfilter]"), st=e.target.closest("[data-stattab]");
+  if(st){ openOverview(st.dataset.stattab); return }
   if(df){ dashSubjFilter=df.dataset.dashfilter||null; renderDashChips(); renderDashboard(); return }
   if(pk){ pickSubj=pk.dataset.pick||null; renderSubjects(); return }
   if(rm){ if(!confirm("ลบวิชานี้?")) return;
