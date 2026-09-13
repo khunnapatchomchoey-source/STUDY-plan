@@ -449,15 +449,16 @@ function renderStrip() {
     el.appendChild(div);
   }
 }
-function taskHTML(t){
+function taskHTML(t,showDate){
   const s=subjOf(t.subj);
   const sub = s ? esc(s.name) : (evIdOf(t) ? "บนปฏิทิน" : "");
+  const when = (showDate?fmtTH(t.date)+" · ":"")+(t.time?t.time+" น.":"ทั้งวัน");
   return `<div class="task ${t.done?'done':''}" data-edit="${t.id}">
     <div class="cb ${t.done?'done':''}" data-toggle="${t.id}"></div>
     <span class="dot" style="background:${s?s.color:'var(--muted)'}"></span>
     <div class="tbody">
       <div class="ttl">${esc(t.title)}</div>
-      <div class="timelabel">${sub?sub+" · ":""}${t.time?t.time+" น.":"ทั้งวัน"}</div>
+      <div class="timelabel">${sub?sub+" · ":""}${when}</div>
     </div>
   </div>`;
 }
@@ -513,7 +514,7 @@ function renderDashboard(){
   order.forEach(k=>{
     if(!groups[k].length) return;
     html+=`<div class="wkhead"><span><span class="urg ${k}">${labels[k]}</span></span><span class="n">${groups[k].length}</span></div>`;
-    html+=groups[k].map(taskHTML).join("");
+    html+=groups[k].map(t=>taskHTML(t,true)).join("");
   });
   document.getElementById("dashList").innerHTML = html || `<div class="empty">ไม่มีงานค้างเลย</div>`;
 }
@@ -524,15 +525,15 @@ function renderOverview(){
     .sort((a,b)=> b.date.localeCompare(a.date) || (b.time||"").localeCompare(a.time||""));
   const el=document.getElementById("ovList");
   if(ovTab==="todo"){
-    el.innerHTML = pending.length ? pending.map(taskHTML).join("") : `<div class="empty">ไม่มีงานค้าง</div>`;
+    el.innerHTML = pending.length ? pending.map(t=>taskHTML(t,true)).join("") : `<div class="empty">ไม่มีงานค้าง</div>`;
   }else if(ovTab==="done"){
-    el.innerHTML = done.length ? done.map(taskHTML).join("") : `<div class="empty">ยังไม่มีงานที่เสร็จ</div>`;
+    el.innerHTML = done.length ? done.map(t=>taskHTML(t,true)).join("") : `<div class="empty">ยังไม่มีงานที่เสร็จ</div>`;
   }else{
     let html="";
     html+=`<div class="wkhead"><span>งานค้าง</span><span class="n">${pending.length}</span></div>`;
-    html+=pending.length ? pending.map(taskHTML).join("") : `<div style="color:var(--muted);font-size:12px;padding:4px 0 8px">— ไม่มี —</div>`;
+    html+=pending.length ? pending.map(t=>taskHTML(t,true)).join("") : `<div style="color:var(--muted);font-size:12px;padding:4px 0 8px">— ไม่มี —</div>`;
     html+=`<div class="wkhead"><span>เสร็จแล้ว</span><span class="n">${done.length}</span></div>`;
-    html+=done.length ? done.map(taskHTML).join("") : `<div style="color:var(--muted);font-size:12px;padding:4px 0 8px">— ไม่มี —</div>`;
+    html+=done.length ? done.map(t=>taskHTML(t,true)).join("") : `<div style="color:var(--muted);font-size:12px;padding:4px 0 8px">— ไม่มี —</div>`;
     el.innerHTML=html;
   }
 }
