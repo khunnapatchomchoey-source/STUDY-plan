@@ -71,10 +71,10 @@ border-radius:20px;padding:7px 12px;font-size:12.5px;min-height:0;transition:tra
 .chip .sw{width:10px;height:10px;border-radius:50%;flex:0 0 auto}
 .chip.on{border-color:var(--accent);background:#16301f}
 .chip .x{color:var(--muted);font-weight:700;padding-left:2px}
-.task{display:flex;gap:12px;align-items:flex-start;background:var(--card);
-border:1px solid var(--line);border-radius:15px;padding:14px;margin-bottom:9px;position:relative;overflow:hidden;
-transition:opacity .2s ease}
-.task .bar{position:absolute;left:0;top:0;bottom:0;width:4px}
+.task{display:flex;gap:12px;align-items:flex-start;padding:13px 2px;border-bottom:1px solid var(--line);
+position:relative}
+.task:last-child{border-bottom:none}
+.task .dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;margin-top:5px}
 .cb{flex:0 0 auto;width:24px;height:24px;border-radius:8px;border:2px solid var(--muted);position:relative;margin-top:1px;
 transition:transform .12s ease,background .15s ease,border-color .15s ease}
 .cb:active{transform:scale(.88)}
@@ -86,9 +86,9 @@ justify-content:center;color:#0a0d0a;font-size:15px;font-weight:900}
 .ttl{font-size:15px;line-height:1.4;word-break:break-word}
 .task.done .ttl{text-decoration:line-through;color:var(--muted)}
 .meta{font-size:12px;color:var(--muted);margin-top:5px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.tag{background:#232833;padding:2px 8px;border-radius:6px;font-size:11px}
+.tag{background:#232833;padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:700;display:inline-block;margin-top:6px}
 .tag.g{background:#1e3a2f;color:var(--green)}
-.tag.up{background:#16301f;color:var(--accent);border:none;padding:4px 10px;min-height:0;font-size:11px;font-weight:600;border-radius:6px}
+.timelabel{font-size:11.5px;color:var(--muted);font-weight:600;white-space:nowrap;flex:0 0 auto}
 .del{background:none;border:none;color:var(--muted);font-size:20px;padding:0;width:32px;height:32px;min-height:32px;position:relative;flex:0 0 auto}
 .del::after{content:"";position:absolute;inset:-8px}
 .empty{text-align:center;color:var(--muted);padding:40px 0;font-size:14px;line-height:1.7}
@@ -253,6 +253,7 @@ box-shadow:0 6px 18px -4px rgba(140,230,168,.45);transition:transform .1s ease,o
   <select id="edSubj"></select>
   <label class="opt"><input type="checkbox" id="edDone">ทำเสร็จแล้ว</label>
   <div class="hint" id="edNote"></div>
+  <button class="btn ghost sm" id="edPush" style="margin-top:10px;width:100%">ส่งขึ้น Google Calendar</button>
   <div class="sheetact">
     <button class="btn danger" id="edDel">ลบ</button>
     <button class="btn ghost" id="edCancel">ยกเลิก</button>
@@ -451,27 +452,27 @@ function renderStrip() {
 }
 function taskHTML(t){
   const s=subjOf(t.subj);
-  return `<div class="task ${t.done?'done':''}">
-    ${s?`<span class="bar" style="background:${s.color}"></span>`:""}
+  const sub = s ? esc(s.name) : (evIdOf(t) ? "บนปฏิทิน" : "");
+  return `<div class="task ${t.done?'done':''}" data-edit="${t.id}">
     <div class="cb ${t.done?'done':''}" data-toggle="${t.id}"></div>
-    <div class="tbody" data-edit="${t.id}">
-      <div class="ttl">${esc(t.title)}</div>
-      <div class="meta">
-        ${s?`<span class="tag" style="color:${s.color}">${esc(s.name)}</span>`:""}
-        <span>${fmtTH(t.date)}</span>${t.time?`<span>${t.time} น.</span>`:`<span>ทั้งวัน</span>`}
-        ${evIdOf(t)?`<span class="tag g">บนปฏิทิน</span>`
-                   :`<button class="tag up" data-push="${t.id}">↑ ส่งขึ้นปฏิทิน</button>`}
+    <span class="dot" style="background:${s?s.color:'var(--muted)'}"></span>
+    <div class="tbody">
+      <div class="row" style="align-items:flex-start;gap:10px">
+        <div class="ttl">${esc(t.title)}</div>
+        <span class="timelabel">${t.time?t.time+" น.":"ทั้งวัน"}</span>
       </div>
+      ${sub?`<div class="hint" style="margin-top:2px">${sub}</div>`:""}
     </div>
-    <button class="del" data-del="${t.id}">×</button></div>`;
+  </div>`;
 }
 const sortT=a=>a.sort((x,y)=>(x.done-y.done)||((x.time||"99").localeCompare(y.time||"99")));
 function renderList(){
   const el=document.getElementById("list");
   if(view==="day"){
     const items=sortT(tasks.filter(t=>t.date===selDate));
-    el.innerHTML=items.length?items.map(taskHTML).join("")
-      :`<div class="empty">ไม่มีงานวันที่ ${fmtTH(selDate)}<br><span style="font-size:12px">พิมพ์เพิ่มด้านล่าง</span></div>`;
+    el.innerHTML = items.length
+      ? `<div class="card" style="padding:4px 14px">${items.map(taskHTML).join("")}</div>`
+      : `<div class="empty">ไม่มีงานวันที่ ${fmtTH(selDate)}<br><span style="font-size:12px">พิมพ์เพิ่มด้านล่าง</span></div>`;
   }else{
     const start=parseKey(selDate); start.setDate(start.getDate()-start.getDay());
     let out="";
@@ -480,8 +481,9 @@ function renderList(){
       const k=keyOf(d), items=sortT(tasks.filter(t=>t.date===k));
       out+=`<div class="wkhead"><span>${TH_DF[d.getDay()]} ${fmtTH(k)}${k===todayKey()?" · วันนี้":""}</span>
         <span class="n">${items.filter(t=>t.done).length}/${items.length}</span></div>`;
-      out+=items.length?items.map(taskHTML).join("")
-        :`<div style="color:var(--muted);font-size:12px;padding:4px 0 8px">— ว่าง —</div>`;
+      out+=items.length
+        ? `<div class="card" style="padding:4px 14px">${items.map(taskHTML).join("")}</div>`
+        : `<div style="color:var(--muted);font-size:12px;padding:4px 0 12px">— ว่าง —</div>`;
     }
     el.innerHTML=out;
   }
@@ -613,14 +615,20 @@ function openEdit(id){
   const t=tasks.find(x=>x.id===id); if(!t) return;
   editId=id; edTitle.value=t.title; edDate.value=t.date; edTime.value=t.time||"";
   edSubj.value=t.subj||""; edDone.checked=!!t.done;
-  document.getElementById("edNote").textContent=evIdOf(t)
+  const linked=!!evIdOf(t);
+  document.getElementById("edNote").textContent=linked
     ?"ผูกกับ Google Calendar — บันทึกแล้วอัปเดตบนปฏิทินด้วย":"ยังไม่ได้ส่งขึ้นปฏิทิน";
+  document.getElementById("edPush").style.display=linked?"none":"block";
   sheet.classList.add("show");
 }
 const closeEdit=()=>{sheet.classList.remove("show");editId=null};
 document.getElementById("edCancel").onclick=closeEdit;
 sheet.onclick=e=>{if(e.target===sheet)closeEdit()};
 document.getElementById("edDel").onclick=()=>{const id=editId;closeEdit();removeTask(id)};
+document.getElementById("edPush").onclick=async()=>{
+  const id=editId; closeEdit();
+  if(await api("/api/task","PATCH",{id,push:true})){toast("ส่งขึ้นปฏิทินแล้ว ✓");renderAll()}
+};
 document.getElementById("edSave").onclick=async()=>{
   const id=editId;
   if(!edTitle.value.trim()||!edDate.value) return toast("กรอกชื่องานและวันที่ให้ครบ");
