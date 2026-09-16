@@ -81,6 +81,9 @@ transition:transform .12s ease,background .15s ease,border-color .15s ease}
 .cb.done{background:var(--green);border-color:var(--green)}
 .cb.done::before{content:"✓";position:absolute;inset:0;display:flex;align-items:center;
 justify-content:center;color:#12160f;font-size:15px;font-weight:900}
+.cb.loading{border-color:var(--accent);display:flex;align-items:center;justify-content:center}
+.cb .spinner{width:15px;height:15px;color:var(--accent);animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 .tbody{flex:1;min-width:0}
 .ttl{font-size:15px;line-height:1.4;word-break:break-word}
 .task.done .ttl{text-decoration:line-through;color:var(--muted)}
@@ -292,6 +295,7 @@ let tasks=JSON.parse(localStorage.getItem("sp_cache")||"[]");
 let subjects=[], opts={mark:false,auto:true,notify:true};
 let calId=null, connected=false, lineOn=false, editId=null, busy=false;
 let selDate=todayKey(), pickSubj=null, view="day", dashSubjFilter=null;
+let syncingIds=new Set();
 
 function todayKey() {
   const d = new Date();
@@ -453,8 +457,12 @@ function taskHTML(t,showDate){
   const s=subjOf(t.subj);
   const sub = s ? esc(s.name) : (evIdOf(t) ? "บนปฏิทิน" : "");
   const when = (showDate?fmtTH(t.date)+" · ":"")+(t.time?t.time+" น.":"ทั้งวัน");
+  const syncing = syncingIds.has(t.id);
+  const cb = syncing
+    ? `<div class="cb loading"><svg class="spinner" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="42" stroke-dashoffset="14"></circle></svg></div>`
+    : `<div class="cb ${t.done?'done':''}" data-toggle="${t.id}"></div>`;
   return `<div class="task ${t.done?'done':''}" data-edit="${t.id}">
-    <div class="cb ${t.done?'done':''}" data-toggle="${t.id}"></div>
+    ${cb}
     <span class="dot" style="background:${s?s.color:'var(--muted)'}"></span>
     <div class="tbody">
       <div class="ttl">${esc(t.title)}</div>
@@ -595,9 +603,11 @@ document.addEventListener("click",async e=>{
     if(await api("/api/settings","POST",{subjects})){renderSubjects();renderAll()} return }
   if(ps){ e.stopPropagation();
     if(await api("/api/task","PATCH",{id:ps.dataset.push,push:true})){toast("ส่งขึ้นปฏิทินแล้ว ✓");renderAll()} return }
-  if(tg){ const t=tasks.find(x=>x.id===tg.dataset.toggle); if(!t) return;
-    t.done=!t.done; renderAll();
-    if(await api("/api/task","PATCH",{id:t.id,done:t.done})) renderAll(); return }
+  if(tg){ const id=tg.dataset.toggle; const t=tasks.find(x=>x.id===id);
+    if(!t||syncingIds.has(id)) return;
+    t.done=!t.done; syncingIds.add(id); renderAll();
+    await api("/api/task","PATCH",{id:t.id,done:t.done});
+    syncingIds.delete(id); renderAll(); return }
   if(dl){ removeTask(dl.dataset.del); return }
   if(ed) openEdit(ed.dataset.edit);
 });
