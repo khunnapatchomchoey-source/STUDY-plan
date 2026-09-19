@@ -6,11 +6,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Planner">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#151a18">
+<meta name="theme-color" content="#121319">
 <title>Study Planner</title>
 <style>
-:root{--bg:#151a18;--card:#1b211e;--line:#2a312d;--text:#dde6e0;--muted:#8b9891;
---accent:#9ad4a6;--green:#9ad4a6;--red:#e0918d;--amber:#e0bd7e;
+:root{--bg:#121319;--card:#1b1d26;--line:#2b2e3b;--text:#eef0f5;--muted:#8d90a3;
+--accent:#8b7cf6;--green:#5fd99a;--red:#f0857f;--amber:#f0c168;
 --st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px);
 --sl:env(safe-area-inset-left,0px);--sr:env(safe-area-inset-right,0px)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -19,7 +19,7 @@ body{margin:0;background:var(--bg);color:var(--text);
 font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Noto Sans Thai",sans-serif;
 -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
 padding-left:var(--sl);padding-right:var(--sr)}
-header{position:sticky;top:0;z-index:20;background:rgba(21,26,24,.82);backdrop-filter:blur(24px) saturate(1.5);
+header{position:sticky;top:0;z-index:20;background:rgba(18,19,25,.82);backdrop-filter:blur(24px) saturate(1.5);
 -webkit-backdrop-filter:blur(24px) saturate(1.5);padding:calc(var(--st) + 14px) 18px 14px;border-bottom:1px solid var(--line)}
 .hrow{display:flex;align-items:center;justify-content:space-between;gap:10px}
 h1{margin:0;font-size:22px;font-weight:800;letter-spacing:-.4px}
@@ -38,7 +38,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent)}
 select{margin-top:10px}
 button{border:none;border-radius:13px;padding:12px 16px;min-height:46px;font-weight:600;
 transition:transform .1s ease,opacity .1s ease}
-.btn{background:var(--accent);color:#12160f}
+.btn{background:var(--accent);color:#15131f}
 .btn.ghost{background:var(--bg);color:var(--text);border:1px solid var(--line)}
 .btn.danger{background:#3a1f22;color:var(--red);border:1px solid #52272c}
 .btn.sm{padding:8px 13px;min-height:36px;font-size:12px}
@@ -51,8 +51,19 @@ transition:transform .1s ease,opacity .1s ease}
 border-radius:20px;padding:7px 12px;font-size:12.5px;min-height:0;transition:transform .1s ease,background .15s ease,border-color .15s ease}
 .chip:active{transform:scale(.96)}
 .chip .sw{width:10px;height:10px;border-radius:50%;flex:0 0 auto}
-.chip.on{border-color:var(--accent);background:#16301f}
+.chip.on{border-color:var(--accent);background:#241f3d}
 .chip .x{color:var(--muted);font-weight:700;padding-left:2px}
+.chipgrouplbl{font-size:10.5px;font-weight:700;color:var(--muted);margin:0 0 6px 2px;letter-spacing:.02em}
+.scopeseg{position:relative;display:flex;background:var(--card);border:1px solid var(--line);
+border-radius:13px;padding:3px;margin-bottom:18px;overflow:hidden}
+.scopeseg-ind{position:absolute;top:3px;bottom:3px;left:3px;width:calc(33.333% - 2px);
+background:var(--accent);border-radius:10px;transition:transform .25s cubic-bezier(.4,0,.2,1);z-index:0}
+.scopeseg button{position:relative;z-index:1;flex:1;background:none;border:none;padding:8px 4px;
+border-radius:10px;font-size:12px;font-weight:700;color:var(--muted);min-height:0;
+transition:color .2s ease;display:flex;flex-direction:column;align-items:center;gap:1px}
+.scopeseg button.on{color:#15131f}
+.scopeseg button .cnt{font-size:10px;font-weight:600;opacity:.75}
+.scopeseg button:active{opacity:.85}
 .task{display:flex;gap:12px;align-items:flex-start;padding:13px 2px;border-bottom:1px solid var(--line);
 position:relative}
 .task:last-child{border-bottom:none}
@@ -63,7 +74,7 @@ transition:transform .12s ease,background .15s ease,border-color .15s ease}
 .cb::after{content:"";position:absolute;inset:-11px}
 .cb.done{background:var(--green);border-color:var(--green)}
 .cb.done::before{content:"✓";position:absolute;inset:0;display:flex;align-items:center;
-justify-content:center;color:#12160f;font-size:15px;font-weight:900}
+justify-content:center;color:#15131f;font-size:15px;font-weight:900}
 .cb.loading{border-color:var(--accent);display:flex;align-items:center;justify-content:center}
 .cb .spinner{width:15px;height:15px;color:var(--accent);animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -77,7 +88,7 @@ justify-content:center;color:#12160f;font-size:15px;font-weight:900}
 .wkhead{font-size:13px;font-weight:700;color:var(--accent);margin:18px 0 9px;display:flex;
 justify-content:space-between;align-items:center}
 .wkhead .n{color:var(--muted);font-weight:400;font-size:11px}
-.addbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(21,26,24,.94);
+.addbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(18,19,25,.94);
 backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--line);
 padding:12px calc(18px + var(--sl)) calc(var(--sb) + 14px) calc(18px + var(--sr))}
 .subjrow{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
@@ -119,8 +130,8 @@ justify-content:center;background:var(--bg);border:1px solid var(--line);color:v
 transition:transform .1s ease,background .15s ease,color .15s ease,border-color .15s ease}
 .iconbtn svg{width:18px;height:18px}
 .iconbtn:active{transform:scale(.92)}
-.iconbtn.active{background:var(--accent);color:#12160f;border-color:var(--accent)}
-.fab{width:48px;height:48px;min-height:0;border-radius:50%;background:var(--accent);color:#12160f;
+.iconbtn.active{background:var(--accent);color:#15131f;border-color:var(--accent)}
+.fab{width:48px;height:48px;min-height:0;border-radius:50%;background:var(--accent);color:#15131f;
 display:flex;align-items:center;justify-content:center;flex:0 0 auto;padding:0;
 transition:transform .1s ease,opacity .1s ease}
 .fab svg{width:22px;height:22px}
@@ -138,10 +149,12 @@ transition:transform .1s ease,background .15s ease}
 .calcell:active{transform:scale(.92)}
 .calcell.outside{color:var(--muted);opacity:.32}
 .calcell.today{border:1px solid var(--accent)}
-.calcell.sel{background:var(--accent);color:#12160f;font-weight:700}
-.calcell .dot{width:5px;height:5px;border-radius:50%;background:var(--accent)}
-.calcell.sel .dot{background:#12160f}
-.calcell .dot.muted{background:var(--muted)}
+.calcell.sel{background:var(--accent);color:#15131f;font-weight:700}
+.calcell .dot{width:6px;height:6px;border-radius:50%}
+.calcell .dot.pending{background:#7a67ee}
+.calcell .dot.done{background:rgba(95,217,154,.4)}
+.calcell.sel .dot.pending{background:#15131f}
+.calcell.sel .dot.done{background:rgba(21,19,31,.45)}
 </style>
 </head>
 <body>
@@ -196,7 +209,9 @@ transition:transform .1s ease,background .15s ease}
     <select id="newColor" style="margin-top:8px"></select>
   </div>
 
-  <div class="chips" id="scopeChips"></div>
+  <div class="chipgrouplbl">ช่วงเวลา</div>
+  <div class="scopeseg" id="scopeChips"></div>
+  <div class="chipgrouplbl" id="subjChipsLbl">วิชา</div>
   <div class="chips" id="subjChips"></div>
 
   <div class="card" id="mainCard" style="padding:4px 14px">
@@ -384,15 +399,26 @@ function renderSubjects(){
 }
 function renderSubjChips(){
   const el=document.getElementById("subjChips");
-  if(!subjects.length){ el.innerHTML=""; return }
+  const lbl=document.getElementById("subjChipsLbl");
+  if(!subjects.length){ el.innerHTML=""; lbl.style.display="none"; return }
+  lbl.style.display="block";
   el.innerHTML=`<button class="chip ${subjFilter?"":"on"}" data-subjfilter="">ทุกวิชา</button>`+
     subjects.map(s=>`<button class="chip ${subjFilter===s.id?"on":""}" data-subjfilter="${s.id}">
       <span class="sw" style="background:${s.color}"></span>${esc(s.name)}</button>`).join("");
 }
 function renderScopeChips(){
   const el=document.getElementById("scopeChips");
-  const opts=[["all","ทั้งหมด"],["today","วันนี้"],["week","สัปดาห์นี้"]];
-  el.innerHTML = opts.map(([k,label])=>`<button class="chip ${dateScope===k?"on":""}" data-scope="${k}">${label}</button>`).join("");
+  let pending=tasks.filter(t=>!t.done);
+  if(subjFilter) pending=pending.filter(t=>t.subj===subjFilter);
+  const today=todayKey();
+  const cAll=pending.length;
+  const cToday=pending.filter(t=>t.date===today).length;
+  const cWeek=pending.filter(t=>["overdue","today","tomorrow","week"].includes(bucketOf(t))).length;
+  const opts=[["all","ทั้งหมด",cAll],["today","วันนี้",cToday],["week","สัปดาห์นี้",cWeek]];
+  const idx=Math.max(0,opts.findIndex(o=>o[0]===dateScope));
+  el.innerHTML = `<div class="scopeseg-ind" style="transform:translateX(${idx*100}%)"></div>`+
+    opts.map(([k,label,n])=>`<button class="${dateScope===k?"on":""}" data-scope="${k}">
+      <span>${label}</span><span class="cnt">${n}</span></button>`).join("");
 }
 document.getElementById("newColor").onchange=e=>{
   const [c]=e.target.value.split("|");
@@ -514,7 +540,7 @@ function renderCalendar(){
     if(k===calSelDay) cls.push("sel");
     html+=`<div class="${cls.join(" ")}" data-calday="${k}">
       <span>${d.getDate()}</span>
-      ${dayTasks.length?`<span class="dot${hasPending?"":" muted"}"></span>`:""}
+      ${dayTasks.length?`<span class="dot${hasPending?" pending":" done"}"></span>`:""}
     </div>`;
   }
   document.getElementById("calGrid").innerHTML=html;
