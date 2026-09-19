@@ -24,22 +24,7 @@ header{position:sticky;top:0;z-index:20;background:rgba(21,26,24,.82);backdrop-f
 .hrow{display:flex;align-items:center;justify-content:space-between;gap:10px}
 h1{margin:0;font-size:22px;font-weight:800;letter-spacing:-.4px}
 .sub{color:var(--muted);font-size:12.5px;margin-top:4px;letter-spacing:-.1px}
-.seg{display:flex;background:var(--bg);border:1px solid var(--line);border-radius:11px;overflow:hidden;flex:0 0 auto}
-.seg button{background:none;color:var(--muted);padding:8px 14px;min-height:0;font-size:12.5px;border-radius:0;
-font-weight:600;transition:background .15s ease,color .15s ease}
-.seg button.on{background:var(--accent);color:#12160f}
 main{padding:16px 18px calc(var(--sb) + 178px)}
-.strip{display:flex;gap:8px;overflow-x:auto;padding:14px 18px;scrollbar-width:none}
-.strip::-webkit-scrollbar{display:none}
-.day{flex:0 0 auto;width:52px;min-height:68px;border-radius:15px;background:var(--card);
-border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
-transition:transform .12s ease,background .15s ease,border-color .15s ease}
-.day:active{transform:scale(.94)}
-.day.sel{background:var(--accent);border-color:var(--accent);color:#12160f;font-weight:700}
-.day.today:not(.sel){border-color:var(--accent)}
-.day .dw{font-size:11px;opacity:.7}.day .dn{font-size:19px;font-weight:700}
-.day .dot{width:5px;height:5px;border-radius:50%;background:var(--accent)}
-.day.sel .dot{background:#12160f}
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:14px;
 box-shadow:0 1px 0 rgba(255,255,255,.02) inset,0 8px 24px -12px rgba(0,0,0,.5)}
 .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
@@ -61,9 +46,7 @@ transition:transform .1s ease,opacity .1s ease}
 .opt{display:flex;align-items:center;gap:9px;margin-top:12px;font-size:13px;color:var(--muted)}
 .opt input{width:19px;height:19px;min-height:0;accent-color:var(--accent);flex:0 0 auto}
 .hint{font-size:11.5px;color:var(--muted);margin-top:10px;line-height:1.65}
-.fold{margin-top:12px;border-top:1px solid var(--line);padding-top:12px;display:none}
-.fold.show{display:block}
-.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
 .chip{display:flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--line);
 border-radius:20px;padding:7px 12px;font-size:12.5px;min-height:0;transition:transform .1s ease,background .15s ease,border-color .15s ease}
 .chip:active{transform:scale(.96)}
@@ -87,22 +70,16 @@ justify-content:center;color:#12160f;font-size:15px;font-weight:900}
 .tbody{flex:1;min-width:0}
 .ttl{font-size:15px;line-height:1.4;word-break:break-word}
 .task.done .ttl{text-decoration:line-through;color:var(--muted)}
-.meta{font-size:12px;color:var(--muted);margin-top:5px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .tag{background:#232833;padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:700;display:inline-block;margin-top:6px}
 .tag.g{background:#1e3a2f;color:var(--green)}
 .timelabel{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:3px}
-.del{background:none;border:none;color:var(--muted);font-size:20px;padding:0;width:32px;height:32px;min-height:32px;position:relative;flex:0 0 auto}
-.del::after{content:"";position:absolute;inset:-8px}
-.empty{text-align:center;color:var(--muted);padding:40px 0;font-size:14px;line-height:1.7}
+.empty{text-align:center;color:var(--muted);padding:34px 0;font-size:13.5px;line-height:1.7}
 .wkhead{font-size:13px;font-weight:700;color:var(--accent);margin:18px 0 9px;display:flex;
 justify-content:space-between;align-items:center}
 .wkhead .n{color:var(--muted);font-weight:400;font-size:11px}
 .addbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(21,26,24,.94);
 backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--line);
 padding:12px calc(18px + var(--sl)) calc(var(--sb) + 14px) calc(18px + var(--sr))}
-.addrow{display:flex;gap:8px;margin-top:8px}
-.addrow input[type=time]{flex:0 0 106px}
-.addrow button{flex:0 0 auto;padding:12px 18px}
 .subjrow{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
 .subjrow::-webkit-scrollbar{display:none}
 .subjrow .chip{flex:0 0 auto}
@@ -121,20 +98,10 @@ z-index:60;opacity:0;transition:.25s;pointer-events:none;max-width:84%;text-alig
 box-shadow:0 8px 24px -8px rgba(0,0,0,.5)}
 .toast.show{opacity:1}
 .spin{opacity:.55}
-.statbox{display:flex;gap:8px;text-align:center}
-.statbox div{flex:1;background:var(--bg);border:1px solid var(--line);border-radius:13px;padding:10px 4px;
-cursor:pointer;transition:transform .1s ease,border-color .15s ease}
-.statbox div:active{transform:scale(.95)}
+.statbox{display:flex;gap:8px;text-align:center;margin-bottom:14px}
+.statbox div{flex:1;background:var(--bg);border:1px solid var(--line);border-radius:13px;padding:10px 4px}
 .statbox .n{font-size:1.35em;font-weight:800;display:block;letter-spacing:-.3px}
 .statbox .l{font-size:10.5px;color:var(--muted);margin-top:2px;display:block}
-.seg.wide{width:100%}
-.seg.wide button{flex:1}
-.urg{font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;flex:0 0 auto}
-.urg.overdue{background:#3a1f22;color:var(--red)}
-.urg.today{background:#3a1f22;color:var(--red)}
-.urg.tomorrow{background:#3a2e1a;color:var(--amber)}
-.urg.week{background:#3a2e1a;color:var(--amber)}
-.urg.later{background:#232833;color:var(--muted)}
 input[type=color].swpick{-webkit-appearance:none;appearance:none;width:18px;height:18px;padding:0;
 border:1px solid rgba(255,255,255,.25);border-radius:50%;overflow:hidden;cursor:pointer;
 background:none;min-height:0;flex:0 0 auto}
@@ -152,8 +119,6 @@ transition:transform .1s ease,background .15s ease,color .15s ease,border-color 
 .iconbtn svg{width:18px;height:18px}
 .iconbtn:active{transform:scale(.92)}
 .iconbtn.active{background:var(--accent);color:#12160f;border-color:var(--accent)}
-.iconbtn.chevron svg{transition:transform .2s ease}
-.iconbtn.chevron.open svg{transform:rotate(180deg)}
 .fab{width:48px;height:48px;min-height:0;border-radius:50%;background:var(--accent);color:#12160f;
 display:flex;align-items:center;justify-content:center;flex:0 0 auto;padding:0;
 transition:transform .1s ease,opacity .1s ease}
@@ -167,80 +132,67 @@ transition:transform .1s ease,opacity .1s ease}
 <body>
 <header>
   <div class="hrow">
-    <div><h1>Study Planner</h1><div class="sub" id="streak">กำลังโหลด…</div></div>
-    <div class="seg"><button id="vDay" class="on">วัน</button><button id="vWeek">สัปดาห์</button></div>
+    <div><h1>Study Planner</h1><div class="sub" id="greeting">กำลังโหลด…</div></div>
+    <button class="iconbtn" id="gearBtn" title="ตั้งค่า">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+    </button>
   </div>
 </header>
-<div class="strip" id="strip"></div>
 <main>
   <div class="card statbox" id="stats">
-    <div data-stattab="todo"><span class="n" id="todo-count" style="color:var(--red)">0</span><span class="l">งานค้าง</span></div>
-    <div data-stattab="done"><span class="n" id="done-count" style="color:var(--green)">0</span><span class="l">เสร็จแล้ว</span></div>
-    <div data-stattab="all"><span class="n" id="total-count">0</span><span class="l">รวม</span></div>
+    <div><span class="n" id="todo-count" style="color:var(--red)">0</span><span class="l">ค้าง</span></div>
+    <div><span class="n" id="done-count" style="color:var(--green)">0</span><span class="l">เสร็จ</span></div>
+    <div><span class="n" id="total-count">0</span><span class="l">รวม</span></div>
   </div>
 
-  <div class="card">
-    <div class="row">
-      <strong style="font-size:14px">งานที่เหลือ (เรียงตามความด่วน)</strong>
-      <div style="display:flex;align-items:center;gap:8px">
-        <span class="hint" style="margin:0" id="dashCount">0 งาน</span>
-        <button class="iconbtn chevron open" id="dashToggle" title="ย่อ/ขยาย">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
-      </div>
-    </div>
-    <div class="fold show" id="dashFold">
-      <div class="chips" id="dashSubjChips"></div>
-      <div id="dashList" style="margin-top:12px"></div>
-    </div>
-  </div>
-
-  <div class="card">
+  <div class="card" id="settingsCard" style="display:none">
     <div class="row">
       <div style="display:flex;align-items:center;gap:8px">
-        <span class="dotstat" id="stat"></span><strong style="font-size:14px">การเชื่อมต่อ</strong>
+        <span class="dotstat" id="stat"></span><strong style="font-size:14px">การเชื่อมต่อ Google Calendar</strong>
       </div>
-      <div style="display:flex;gap:8px">
-        <button class="iconbtn" id="gearBtn" title="ตั้งค่า">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-        </button>
-        <button class="btn ghost sm" id="authBtn">เชื่อมต่อ</button>
-      </div>
+      <button class="btn ghost sm" id="authBtn">เชื่อมต่อ</button>
     </div>
     <div class="hint" id="syncInfo">—</div>
+    <select id="calSel" style="display:none"></select>
+    <label class="opt"><input type="checkbox" id="optMark">ติ๊กเสร็จ → ใส่เครื่องหมายถูกหน้าชื่อบนปฏิทิน</label>
+    <label class="opt"><input type="checkbox" id="optAuto">เพิ่มงานใหม่ → ส่งขึ้นปฏิทินทันที</label>
+    <label class="opt"><input type="checkbox" id="optNotify">เปิดแจ้งเตือนเข้า LINE</label>
 
-    <div class="fold" id="fold">
-      <select id="calSel" style="display:none"></select>
-      <label class="opt"><input type="checkbox" id="optMark">ติ๊กเสร็จ → ใส่ ✓ บนปฏิทิน</label>
-      <label class="opt"><input type="checkbox" id="optAuto">เพิ่มงานใหม่ → ส่งขึ้นปฏิทินทันที</label>
-      <label class="opt"><input type="checkbox" id="optNotify">เปิดแจ้งเตือนเข้า LINE</label>
-
-      <div class="sectlabel first">LINE</div>
-      <div class="hint" id="lineInfo">—</div>
-      <div style="display:flex;gap:8px;margin-top:8px">
-        <button class="btn ghost sm" id="pairBtn">จับคู่ LINE</button>
-        <button class="btn ghost sm" id="testBtn">ส่งทดสอบ</button>
-      </div>
-
-      <div class="sectlabel">วิชา</div>
-      <div class="hint" style="margin-top:4px">สีในแอปเป็นเรื่องของแอปเท่านั้น จะไม่ถูกส่งไปกำหนดสีบน Google Calendar อีกต่อไป ไม่ว่าวิชาเก่าหรือใหม่</div>
-      <div class="chips" id="subjAdmin"></div>
-      <div class="colorrow" style="margin-top:10px">
-        <input type="text" id="newSubj" placeholder="ชื่อวิชาใหม่" style="margin-top:0">
-        <input type="color" id="newColorCustom" value="#8CE6A8" title="กำหนดสีเอง">
-        <button class="btn sm" id="addSubj" style="flex:0 0 auto">เพิ่ม</button>
-      </div>
-      <select id="newColor" style="margin-top:8px"></select>
-      <div class="hint" style="margin-top:2px">เลือกด่วนจากรายการ หรือกำหนดสีเองด้วยจุดสีด้านบน</div>
+    <div class="sectlabel first">LINE</div>
+    <div class="hint" id="lineInfo">—</div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button class="btn ghost sm" id="pairBtn">จับคู่ LINE</button>
+      <button class="btn ghost sm" id="testBtn">ส่งทดสอบ</button>
     </div>
+
+    <div class="sectlabel">วิชา</div>
+    <div class="hint" style="margin-top:4px">สีในแอปเป็นเรื่องของแอปเท่านั้น จะไม่ถูกส่งไปกำหนดสีบน Google Calendar</div>
+    <div class="chips" id="subjAdmin" style="margin-bottom:0"></div>
+    <div class="colorrow" style="margin-top:10px">
+      <input type="text" id="newSubj" placeholder="ชื่อวิชาใหม่" style="margin-top:0">
+      <input type="color" id="newColorCustom" value="#8CE6A8" title="กำหนดสีเอง">
+      <button class="btn sm" id="addSubj" style="flex:0 0 auto">เพิ่ม</button>
+    </div>
+    <select id="newColor" style="margin-top:8px"></select>
   </div>
-  <div id="list"></div>
+
+  <div class="chips" id="scopeChips"></div>
+  <div class="chips" id="subjChips"></div>
+
+  <div class="card" id="mainCard" style="padding:4px 14px">
+    <div id="mainList"></div>
+  </div>
+
+  <button class="btn ghost" id="doneToggle" style="width:100%;margin-top:14px;font-size:13px">แสดงงานที่เสร็จแล้ว</button>
+  <div id="doneWrap" style="display:none;margin-top:10px">
+    <div class="card" style="padding:4px 14px"><div id="doneList"></div></div>
+  </div>
 </main>
 
 <div class="addbar">
   <div class="subjrow" id="subjPick"></div>
   <div class="quickadd">
-    <input type="text" id="newTitle" placeholder="เพิ่มงานใหม่…" autocomplete="off" enterkeyhint="done">
+    <input type="text" id="newTitle" placeholder="เพิ่มงานใหม่ (วันนี้)…" autocomplete="off" enterkeyhint="done">
     <input type="time" id="newTime">
     <button class="fab" id="addBtn" title="เพิ่มงาน">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
@@ -262,19 +214,6 @@ transition:transform .1s ease,opacity .1s ease}
     <button class="btn" id="edSave">บันทึก</button>
   </div>
 </div></div>
-
-<div class="sheet" id="overviewSheet"><div class="sheetbox">
-  <div class="row" style="margin-bottom:14px">
-    <h3 style="margin:0">ภาพรวมงาน</h3>
-    <button class="btn ghost sm" id="ovClose">ปิด</button>
-  </div>
-  <div class="seg wide">
-    <button id="ovTodo">ค้าง</button>
-    <button id="ovDone">เสร็จ</button>
-    <button id="ovAll" class="on">รวม</button>
-  </div>
-  <div id="ovList" style="margin-top:14px"></div>
-</div></div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -294,17 +233,16 @@ const COLORS=[["ฟ้า","#7c9cff",7],["เขียว","#4ade80",10],["ส�
 let tasks=JSON.parse(localStorage.getItem("sp_cache")||"[]");
 let subjects=[], opts={mark:false,auto:true,notify:true};
 let calId=null, connected=false, lineOn=false, editId=null, busy=false;
-let selDate=todayKey(), pickSubj=null, view="day", dashSubjFilter=null;
+let dateScope="all", subjFilter=null, doneShown=false, pickSubj=null;
 let syncingIds=new Set();
 
 function todayKey() {
   const d = new Date();
-  return d.getFullYear() + "-" + 
-         String(d.getMonth() + 1).padStart(2, "0") + "-" + 
+  return d.getFullYear() + "-" +
+         String(d.getMonth() + 1).padStart(2, "0") + "-" +
          String(d.getDate()).padStart(2, "0");
 }
 const parseKey=k=>{const[y,m,d]=k.split("-").map(Number);return new Date(y,m-1,d)};
-/* ฟังก์ชันที่ renderStreak() เรียกใช้แต่ของเดิมไม่เคยประกาศไว้ — เพิ่มให้ตรงนี้ */
 function keyOf(d){
   return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
 }
@@ -325,8 +263,6 @@ function bucketOf(t){
   if(d<=6) return "week"; return "later";
 }
 const TH_M=["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
-const TH_D=["อา","จ","อ","พ","พฤ","ศ","ส"];
-const TH_DF=["อาทิตย์","จันทร์","อังคาร","พุธ","พฤหัสฯ","ศุกร์","เสาร์"];
 const fmtTH=k=>{const d=parseKey(k);return d.getDate()+" "+TH_M[d.getMonth()]};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const subjOf=id=>subjects.find(s=>s.id===id);
@@ -386,8 +322,8 @@ function setStatus(kind,msg){
 /* ══════ วิชา ══════ */
 function renderSubjects(){
   const pick=document.getElementById("subjPick");
-  pick.innerHTML=`<button class="chip ${pickSubj?"":"on"}" data-pick="">ไม่ระบุวิชา</button>`+
-    subjects.map(s=>`<button class="chip ${pickSubj===s.id?"on":""}" data-pick="${s.id}">
+  pick.innerHTML=`<button class="chip ${pickSubj?"":"on"}" data-pick="">ไม่ระบุวิชา</button>`
+    +subjects.map(s=>`<button class="chip ${pickSubj===s.id?"on":""}" data-pick="${s.id}">
       <span class="sw" style="background:${s.color}"></span>${esc(s.name)}</button>`).join("");
   document.getElementById("subjAdmin").innerHTML = subjects.length
     ? subjects.map(s=>`<span class="chip">
@@ -400,14 +336,19 @@ function renderSubjects(){
   const nc=document.getElementById("newColor");
   if(!nc.options.length) COLORS.forEach(([n,c,g])=>{
     const o=document.createElement("option"); o.value=c+"|"+g; o.textContent="● "+n; o.style.color=c; nc.appendChild(o)});
-  renderDashChips();
+  renderSubjChips();
 }
-function renderDashChips(){
-  const el=document.getElementById("dashSubjChips");
+function renderSubjChips(){
+  const el=document.getElementById("subjChips");
   if(!subjects.length){ el.innerHTML=""; return }
-  el.innerHTML=`<button class="chip ${dashSubjFilter?"":"on"}" data-dashfilter="">ทั้งหมด</button>`+
-    subjects.map(s=>`<button class="chip ${dashSubjFilter===s.id?"on":""}" data-dashfilter="${s.id}">
+  el.innerHTML=`<button class="chip ${subjFilter?"":"on"}" data-subjfilter="">ทุกวิชา</button>`+
+    subjects.map(s=>`<button class="chip ${subjFilter===s.id?"on":""}" data-subjfilter="${s.id}">
       <span class="sw" style="background:${s.color}"></span>${esc(s.name)}</button>`).join("");
+}
+function renderScopeChips(){
+  const el=document.getElementById("scopeChips");
+  const opts=[["all","ทั้งหมด"],["today","วันนี้"],["week","สัปดาห์นี้"]];
+  el.innerHTML = opts.map(([k,label])=>`<button class="chip ${dateScope===k?"on":""}" data-scope="${k}">${label}</button>`).join("");
 }
 document.getElementById("newColor").onchange=e=>{
   const [c]=e.target.value.split("|");
@@ -416,8 +357,6 @@ document.getElementById("newColor").onchange=e=>{
 document.addEventListener("input",e=>{
   const cp=e.target.closest("[data-subjcolor]"); if(!cp) return;
   const subj=subjects.find(s=>s.id===cp.dataset.subjcolor); if(!subj) return;
-  /* เปลี่ยนแค่สีที่โชว์ในแอป เก็บลง localStorage เท่านั้น — ไม่เรียก /api/settings เลย
-     เพื่อรับประกันว่าจะไม่มีทางไปกระทบสีของงานที่ซิงก์ขึ้น Google Calendar ได้อีก */
   subj.color=cp.value;
   colorOverrides[subj.id]=cp.value;
   localStorage.setItem("sp_coloroverrides",JSON.stringify(colorOverrides));
@@ -437,22 +376,6 @@ document.getElementById("addSubj").onclick=async()=>{
 };
 
 /* ══════ render ══════ */
-function renderStrip() {
-  const el = document.getElementById("strip"); el.innerHTML = "";
-  const base = new Date(); base.setHours(0,0,0,0);
-  const todayKey = base.getFullYear() + "-" + String(base.getMonth()+1).padStart(2,"0") + "-" + String(base.getDate()).padStart(2,"0");
-
-  for(let i=-3; i<=17; i++){
-    const d = new Date(base); d.setDate(base.getDate()+i);
-    const k = d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
-    const has = tasks.some(t=>t.date===k);
-    const div = document.createElement("div");
-    div.className = "day" + (k===selDate ? " sel" : "") + (k===todayKey ? " today" : "");
-    div.innerHTML = `<span class="dw">${["อา","จ","อ","พ","พฤ","ศ","ส"][d.getDay()]}</span><span class="dn">${d.getDate()}</span>${has?'<span class="dot"></span>':'<span style="height:5px"></span>'}`;
-    div.onclick = () => { selDate=k; renderAll(); };
-    el.appendChild(div);
-  }
-}
 function taskHTML(t,showDate){
   const s=subjOf(t.subj);
   const sub = s ? esc(s.name) : (evIdOf(t) ? "บนปฏิทิน" : "");
@@ -470,36 +393,22 @@ function taskHTML(t,showDate){
     </div>
   </div>`;
 }
-const sortT=a=>a.sort((x,y)=>(x.done-y.done)||((x.time||"99").localeCompare(y.time||"99")));
-function renderList(){
-  const el=document.getElementById("list");
-  if(view==="day"){
-    const items=sortT(tasks.filter(t=>t.date===selDate));
-    el.innerHTML = items.length
-      ? `<div class="card" style="padding:4px 14px">${items.map(taskHTML).join("")}</div>`
-      : `<div class="empty">ไม่มีงานวันที่ ${fmtTH(selDate)}<br><span style="font-size:12px">พิมพ์เพิ่มด้านล่าง</span></div>`;
-  }else{
-    const start=parseKey(selDate); start.setDate(start.getDate()-start.getDay());
-    let out="";
-    for(let i=0;i<7;i++){
-      const d=new Date(start); d.setDate(start.getDate()+i);
-      const k=keyOf(d), items=sortT(tasks.filter(t=>t.date===k));
-      out+=`<div class="wkhead"><span>${TH_DF[d.getDay()]} ${fmtTH(k)}${k===todayKey()?" · วันนี้":""}</span>
-        <span class="n">${items.filter(t=>t.done).length}/${items.length}</span></div>`;
-      out+=items.length
-        ? `<div class="card" style="padding:4px 14px">${items.map(taskHTML).join("")}</div>`
-        : `<div style="color:var(--muted);font-size:12px;padding:4px 0 12px">— ว่าง —</div>`;
-    }
-    el.innerHTML=out;
-  }
-}
-function renderStreak(){
+function calcStreak(){
   let n=0,d=new Date(); d.setHours(0,0,0,0);
   for(let i=0;i<400;i++){ const day=tasks.filter(t=>t.date===keyOf(d));
     if(day.length&&day.every(t=>t.done)){n++;d.setDate(d.getDate()-1)}else break }
-  const day=tasks.filter(t=>t.date===selDate);
-  document.getElementById("streak").textContent=
-    `${fmtTH(selDate)} · เสร็จ ${day.filter(t=>t.done).length}/${day.length}`+(n?` · ต่อเนื่อง ${n} วัน`:"");
+  return n;
+}
+function renderHeader(){
+  const h=new Date().getHours();
+  let g="ดึกแล้ว";
+  if(h>=5&&h<12) g="สวัสดีตอนเช้า";
+  else if(h>=12&&h<17) g="สวัสดีตอนบ่าย";
+  else if(h>=17&&h<22) g="สวัสดีตอนเย็น";
+  const pending=tasks.filter(t=>!t.done).length;
+  const streak=calcStreak();
+  document.getElementById("greeting").textContent=
+    `${g} · เหลือ ${pending} งาน`+(streak?` · ต่อเนื่อง ${streak} วัน`:"");
 }
 function updateStats(){
   const done = tasks.filter(t => t.done).length;
@@ -507,80 +416,58 @@ function updateStats(){
   document.getElementById("done-count").textContent = done;
   document.getElementById("total-count").textContent = tasks.length;
 }
-function renderDashboard(){
+function scopedBuckets(){
+  if(dateScope==="today") return ["overdue","today"];
+  if(dateScope==="week") return ["overdue","today","tomorrow","week"];
+  return ["overdue","today","tomorrow","week","later"];
+}
+function renderMain(){
   let pending = tasks.filter(t=>!t.done);
-  if(dashSubjFilter) pending = pending.filter(t=>t.subj===dashSubjFilter);
-  document.getElementById("dashCount").textContent = pending.length + " งาน";
-
-  const order=["overdue","today","tomorrow","week","later"];
+  if(subjFilter) pending = pending.filter(t=>t.subj===subjFilter);
+  const order=scopedBuckets();
   const labels={overdue:"เลยกำหนด",today:"วันนี้",tomorrow:"พรุ่งนี้",week:"สัปดาห์นี้",later:"ภายหลัง"};
   const groups={overdue:[],today:[],tomorrow:[],week:[],later:[]};
-  pending.forEach(t=>groups[bucketOf(t)].push(t));
+  pending.forEach(t=>{ const b=bucketOf(t); if(order.includes(b)) groups[b].push(t); });
   order.forEach(k=>groups[k].sort((a,b)=>(a.date+(a.time||"99")).localeCompare(b.date+(b.time||"99"))));
-
   let html="";
   order.forEach(k=>{
     if(!groups[k].length) return;
-    html+=`<div class="wkhead"><span><span class="urg ${k}">${labels[k]}</span></span><span class="n">${groups[k].length}</span></div>`;
+    html+=`<div class="wkhead"><span>${labels[k]}</span><span class="n">${groups[k].length}</span></div>`;
     html+=groups[k].map(t=>taskHTML(t,true)).join("");
   });
-  document.getElementById("dashList").innerHTML = html || `<div class="empty">ไม่มีงานค้างเลย</div>`;
+  document.getElementById("mainList").innerHTML = html
+    || `<div class="empty">ไม่มีงานค้าง${(subjFilter||dateScope!=="all")?"ในตัวกรองนี้":""}<br><span style="font-size:12px">พิมพ์เพิ่มด้านล่าง</span></div>`;
 }
-function renderOverview(){
-  const pending = tasks.filter(t=>!t.done).slice()
-    .sort((a,b)=>(a.date+(a.time||"99")).localeCompare(b.date+(b.time||"99")));
-  const done = tasks.filter(t=>t.done).slice()
-    .sort((a,b)=> b.date.localeCompare(a.date) || (b.time||"").localeCompare(a.time||""));
-  const el=document.getElementById("ovList");
-  if(ovTab==="todo"){
-    el.innerHTML = pending.length ? pending.map(t=>taskHTML(t,true)).join("") : `<div class="empty">ไม่มีงานค้าง</div>`;
-  }else if(ovTab==="done"){
-    el.innerHTML = done.length ? done.map(t=>taskHTML(t,true)).join("") : `<div class="empty">ยังไม่มีงานที่เสร็จ</div>`;
-  }else{
-    let html="";
-    html+=`<div class="wkhead"><span>งานค้าง</span><span class="n">${pending.length}</span></div>`;
-    html+=pending.length ? pending.map(t=>taskHTML(t,true)).join("") : `<div style="color:var(--muted);font-size:12px;padding:4px 0 8px">— ไม่มี —</div>`;
-    html+=`<div class="wkhead"><span>เสร็จแล้ว</span><span class="n">${done.length}</span></div>`;
-    html+=done.length ? done.map(t=>taskHTML(t,true)).join("") : `<div style="color:var(--muted);font-size:12px;padding:4px 0 8px">— ไม่มี —</div>`;
-    el.innerHTML=html;
-  }
+function renderDoneList(){
+  let done = tasks.filter(t=>t.done);
+  if(subjFilter) done = done.filter(t=>t.subj===subjFilter);
+  done = done.slice().sort((a,b)=> b.date.localeCompare(a.date) || (b.time||"").localeCompare(a.time||""));
+  document.getElementById("doneList").innerHTML = done.length
+    ? done.map(t=>taskHTML(t,true)).join("")
+    : `<div class="empty">ยังไม่มีงานที่เสร็จ</div>`;
+  document.getElementById("doneToggle").textContent = (doneShown?"ซ่อน":"แสดง")+`งานที่เสร็จแล้ว (${done.length})`;
 }
-let ovTab="all";
-function syncOvTabs(){
-  document.getElementById("ovTodo").classList.toggle("on",ovTab==="todo");
-  document.getElementById("ovDone").classList.toggle("on",ovTab==="done");
-  document.getElementById("ovAll").classList.toggle("on",ovTab==="all");
+function renderAll(){
+  renderHeader();
+  updateStats();
+  renderScopeChips();
+  renderSubjChips();
+  renderMain();
+  renderDoneList();
 }
-function openOverview(tab){
-  ovTab=tab; syncOvTabs(); renderOverview();
-  document.getElementById("overviewSheet").classList.add("show");
-}
-const closeOverview=()=>document.getElementById("overviewSheet").classList.remove("show");
-document.getElementById("ovClose").onclick=closeOverview;
-document.getElementById("overviewSheet").onclick=e=>{ if(e.target.id==="overviewSheet") closeOverview(); };
-document.getElementById("ovTodo").onclick=()=>{ovTab="todo";syncOvTabs();renderOverview();};
-document.getElementById("ovDone").onclick=()=>{ovTab="done";syncOvTabs();renderOverview();};
-document.getElementById("ovAll").onclick=()=>{ovTab="all";syncOvTabs();renderOverview();};
-
-function renderAll(){renderStrip();renderList();renderStreak();updateStats();renderDashboard();renderOverview()}
 
 /* ══════ actions ══════ */
-document.getElementById("vDay").onclick=()=>{view="day";vDay.classList.add("on");vWeek.classList.remove("on");renderList()};
-document.getElementById("vWeek").onclick=()=>{view="week";vWeek.classList.add("on");vDay.classList.remove("on");renderList()};
 document.getElementById("gearBtn").onclick=()=>{
-  const open=document.getElementById("fold").classList.toggle("show");
-  document.getElementById("gearBtn").classList.toggle("active",open);
+  const card=document.getElementById("settingsCard");
+  const show = card.style.display==="none";
+  card.style.display = show?"block":"none";
+  document.getElementById("gearBtn").classList.toggle("active",show);
 };
-
-const dashFoldEl=document.getElementById("dashFold"), dashToggleBtn=document.getElementById("dashToggle");
-let dashOpen = localStorage.getItem("sp_dashopen");
-dashOpen = dashOpen===null ? true : dashOpen==="1";
-function applyDashFold(){
-  dashFoldEl.classList.toggle("show", dashOpen);
-  dashToggleBtn.classList.toggle("open", dashOpen);
-}
-dashToggleBtn.onclick=()=>{ dashOpen=!dashOpen; localStorage.setItem("sp_dashopen", dashOpen?"1":"0"); applyDashFold(); };
-applyDashFold();
+document.getElementById("doneToggle").onclick=()=>{
+  doneShown=!doneShown;
+  document.getElementById("doneWrap").style.display=doneShown?"block":"none";
+  renderDoneList();
+};
 
 document.getElementById("addBtn").onclick=addTask;
 document.getElementById("newTitle").addEventListener("keydown",e=>{if(e.key==="Enter")addTask()});
@@ -588,27 +475,23 @@ async function addTask(){
   const i=document.getElementById("newTitle"),tm=document.getElementById("newTime");
   const v=i.value.trim(); if(!v) return;
   i.value="";tm.value="";i.blur();
-  if(await api("/api/task","POST",{title:v,date:selDate,time:tm.value,subj:pickSubj})) renderAll();
+  if(await api("/api/task","POST",{title:v,date:todayKey(),time:tm.value,subj:pickSubj})) renderAll();
 }
 document.addEventListener("click",async e=>{
   const pk=e.target.closest("[data-pick]"), rm=e.target.closest("[data-rmsubj]"),
-        tg=e.target.closest("[data-toggle]"), dl=e.target.closest("[data-del]"),
-        ps=e.target.closest("[data-push]"), ed=e.target.closest("[data-edit]"),
-        df=e.target.closest("[data-dashfilter]"), st=e.target.closest("[data-stattab]");
-  if(st){ openOverview(st.dataset.stattab); return }
-  if(df){ dashSubjFilter=df.dataset.dashfilter||null; renderDashChips(); renderDashboard(); return }
+        tg=e.target.closest("[data-toggle]"), ed=e.target.closest("[data-edit]"),
+        sf=e.target.closest("[data-subjfilter]"), sc=e.target.closest("[data-scope]");
+  if(sc){ dateScope=sc.dataset.scope; renderScopeChips(); renderMain(); return }
+  if(sf){ subjFilter=sf.dataset.subjfilter||null; renderSubjChips(); renderMain(); renderDoneList(); return }
   if(pk){ pickSubj=pk.dataset.pick||null; renderSubjects(); return }
   if(rm){ if(!confirm("ลบวิชานี้?")) return;
     subjects=subjects.filter(s=>s.id!==rm.dataset.rmsubj);
     if(await api("/api/settings","POST",{subjects})){renderSubjects();renderAll()} return }
-  if(ps){ e.stopPropagation();
-    if(await api("/api/task","PATCH",{id:ps.dataset.push,push:true})){toast("ส่งขึ้นปฏิทินแล้ว ✓");renderAll()} return }
   if(tg){ const id=tg.dataset.toggle; const t=tasks.find(x=>x.id===id);
     if(!t||syncingIds.has(id)) return;
     t.done=!t.done; syncingIds.add(id); renderAll();
     await api("/api/task","PATCH",{id:t.id,done:t.done});
     syncingIds.delete(id); renderAll(); return }
-  if(dl){ removeTask(dl.dataset.del); return }
   if(ed) openEdit(ed.dataset.edit);
 });
 async function removeTask(id){
