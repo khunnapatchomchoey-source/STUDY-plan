@@ -85,6 +85,7 @@ padding:12px calc(18px + var(--sl)) calc(var(--sb) + 14px) calc(18px + var(--sr)
 .subjrow .chip{flex:0 0 auto}
 .sheet{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.6);display:none;align-items:flex-end;justify-content:center}
 .sheet.show{display:flex}
+#sheet{z-index:52}
 .sheetbox{width:100%;max-width:520px;background:var(--card);border:1px solid var(--line);
 border-radius:22px 22px 0 0;padding:22px calc(18px + var(--sl)) calc(var(--sb) + 18px) calc(18px + var(--sr));max-height:88vh;overflow:auto}
 .sheetbox h3{margin:0 0 14px;font-size:17px;font-weight:700;letter-spacing:-.2px}
@@ -127,15 +128,34 @@ transition:transform .1s ease,opacity .1s ease}
 .quickadd{display:flex;gap:10px;margin-top:8px;align-items:center}
 .quickadd input[type=text]{border-radius:24px;padding-left:18px}
 .quickadd input[type=time]{flex:0 0 92px;border-radius:24px;text-align:center;padding-left:0;padding-right:0}
+.calnav{display:flex;align-items:center;justify-content:space-between;margin:10px 0 4px}
+.calnav .lbl{font-size:15px;font-weight:700}
+.calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:8px}
+.calhead{font-size:10px;color:var(--muted);text-align:center;font-weight:700;padding-bottom:4px}
+.calcell{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+border-radius:10px;font-size:13px;position:relative;cursor:pointer;color:var(--text);gap:2px;
+transition:transform .1s ease,background .15s ease}
+.calcell:active{transform:scale(.92)}
+.calcell.outside{color:var(--muted);opacity:.32}
+.calcell.today{border:1px solid var(--accent)}
+.calcell.sel{background:var(--accent);color:#12160f;font-weight:700}
+.calcell .dot{width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.calcell.sel .dot{background:#12160f}
+.calcell .dot.muted{background:var(--muted)}
 </style>
 </head>
 <body>
 <header>
   <div class="hrow">
     <div><h1>Study Planner</h1><div class="sub" id="greeting">กำลังโหลด…</div></div>
-    <button class="iconbtn" id="gearBtn" title="ตั้งค่า">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-    </button>
+    <div style="display:flex;gap:8px">
+      <button class="iconbtn" id="calBtn" title="ปฏิทิน">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+      </button>
+      <button class="iconbtn" id="gearBtn" title="ตั้งค่า">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+      </button>
+    </div>
   </div>
 </header>
 <main>
@@ -214,6 +234,24 @@ transition:transform .1s ease,opacity .1s ease}
     <button class="btn" id="edSave">บันทึก</button>
   </div>
 </div></div>
+
+<div class="sheet" id="calSheet"><div class="sheetbox">
+  <div class="row" style="margin-bottom:4px">
+    <h3 style="margin:0">ปฏิทิน</h3>
+    <button class="btn ghost sm" id="calClose">ปิด</button>
+  </div>
+  <div class="calnav">
+    <button class="iconbtn" id="calPrev" title="เดือนก่อนหน้า">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    </button>
+    <span class="lbl" id="calLabel"></span>
+    <button class="iconbtn" id="calNext" title="เดือนถัดไป">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </button>
+  </div>
+  <div class="calgrid" id="calGrid"></div>
+  <div id="calDayList" style="margin-top:10px"></div>
+</div></div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -234,6 +272,7 @@ let tasks=JSON.parse(localStorage.getItem("sp_cache")||"[]");
 let subjects=[], opts={mark:false,auto:true,notify:true};
 let calId=null, connected=false, lineOn=false, editId=null, busy=false;
 let dateScope="all", subjFilter=null, doneShown=false, pickSubj=null;
+let calMonth=new Date(), calSelDay=null;
 let syncingIds=new Set();
 
 function todayKey() {
@@ -307,11 +346,16 @@ async function refresh(){
   document.getElementById("lineInfo").textContent = lineOn
     ? "จับคู่แล้ว ✓ · สรุป 07:00 · เตือนก่อนถึงเวลา 1 ชม. · พรีวิวพรุ่งนี้ 20:00"
     : "ยังไม่ได้จับคู่ — กด “จับคู่ LINE” แล้วทักบอทใน LINE";
-  if(connected){
-    const t=s.lastSync?new Date(s.lastSync).toLocaleString("th-TH",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}):"—";
-    setStatus("ok",`ซิงก์อัตโนมัติทุกชั่วโมงบนเซิร์ฟเวอร์ · ล่าสุด ${t}`);
-  }else setStatus("off","ยังไม่ได้เชื่อมต่อ Google · แตะปุ่มเพื่อเริ่ม");
   renderSubjects(); renderAll();
+
+  /* ดึงข้อมูลจาก Google Calendar จริงๆ อัตโนมัติทุกครั้งที่ refresh (ตอนเปิดแอป, ทุก 5 นาที,
+     และตอนสลับกลับมาที่แอป) — ไม่ใช่แค่โหลดข้อมูลที่ backend เคยเก็บไว้เหมือนก่อนหน้านี้ */
+  if(connected){
+    const r=await api("/api/sync","POST");
+    const t=new Date().toLocaleString("th-TH",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
+    setStatus("ok", r?`ซิงก์อัตโนมัติแล้ว · ล่าสุด ${t}`:"เชื่อมต่ออยู่ แต่ซิงก์รอบนี้ไม่สำเร็จ ลองใหม่ภายหลัง");
+    renderAll();
+  }else setStatus("off","ยังไม่ได้เชื่อมต่อ Google · แตะปุ่มเพื่อเริ่ม");
 }
 function setStatus(kind,msg){
   document.getElementById("stat").className="dotstat"+(kind==="ok"?" on":kind==="warn"?" warn":"");
@@ -447,6 +491,60 @@ function renderDoneList(){
     : `<div class="empty">ยังไม่มีงานที่เสร็จ</div>`;
   document.getElementById("doneToggle").textContent = (doneShown?"ซ่อน":"แสดง")+`งานที่เสร็จแล้ว (${done.length})`;
 }
+const CAL_M=["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม",
+"สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
+const CAL_DOW=["อา","จ","อ","พ","พฤ","ศ","ส"];
+function renderCalendar(){
+  const y=calMonth.getFullYear(), m=calMonth.getMonth();
+  document.getElementById("calLabel").textContent=`${CAL_M[m]} ${y+543}`;
+  const first=new Date(y,m,1);
+  const startOffset=first.getDay();
+  const gridStart=new Date(y,m,1-startOffset);
+  const today=todayKey();
+  let html=CAL_DOW.map(d=>`<div class="calhead">${d}</div>`).join("");
+  for(let i=0;i<42;i++){
+    const d=new Date(gridStart); d.setDate(gridStart.getDate()+i);
+    const k=keyOf(d);
+    const outside=d.getMonth()!==m;
+    const dayTasks=tasks.filter(t=>t.date===k);
+    const hasPending=dayTasks.some(t=>!t.done);
+    const cls=["calcell"];
+    if(outside) cls.push("outside");
+    if(k===today) cls.push("today");
+    if(k===calSelDay) cls.push("sel");
+    html+=`<div class="${cls.join(" ")}" data-calday="${k}">
+      <span>${d.getDate()}</span>
+      ${dayTasks.length?`<span class="dot${hasPending?"":" muted"}"></span>`:""}
+    </div>`;
+  }
+  document.getElementById("calGrid").innerHTML=html;
+  renderCalDayList();
+}
+function renderCalDayList(){
+  const el=document.getElementById("calDayList");
+  if(!calSelDay){ el.innerHTML=""; return }
+  const items=tasks.filter(t=>t.date===calSelDay)
+    .sort((a,b)=>(a.done-b.done)||((a.time||"99").localeCompare(b.time||"99")));
+  el.innerHTML=`<div class="sectlabel first">${fmtTH(calSelDay)}</div>`+
+    (items.length?items.map(t=>taskHTML(t)).join("")
+      :`<div class="empty" style="padding:18px 0">ไม่มีงานวันนี้</div>`);
+}
+function openCalendar(){
+  calMonth=new Date(); calSelDay=todayKey();
+  renderCalendar();
+  document.getElementById("calSheet").classList.add("show");
+}
+const closeCalendar=()=>document.getElementById("calSheet").classList.remove("show");
+document.getElementById("calBtn").onclick=openCalendar;
+document.getElementById("calClose").onclick=closeCalendar;
+document.getElementById("calSheet").onclick=e=>{ if(e.target.id==="calSheet") closeCalendar(); };
+document.getElementById("calPrev").onclick=()=>{ calMonth=new Date(calMonth.getFullYear(),calMonth.getMonth()-1,1); renderCalendar(); };
+document.getElementById("calNext").onclick=()=>{ calMonth=new Date(calMonth.getFullYear(),calMonth.getMonth()+1,1); renderCalendar(); };
+document.getElementById("calGrid").addEventListener("click",e=>{
+  const cell=e.target.closest("[data-calday]"); if(!cell) return;
+  calSelDay=cell.dataset.calday; renderCalendar();
+});
+
 function renderAll(){
   renderHeader();
   updateStats();
@@ -454,6 +552,7 @@ function renderAll(){
   renderSubjChips();
   renderMain();
   renderDoneList();
+  renderCalendar();
 }
 
 /* ══════ actions ══════ */
